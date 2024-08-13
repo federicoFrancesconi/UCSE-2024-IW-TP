@@ -4,47 +4,76 @@
 (Indicar de qué se trata, explicar el funcionamiento en general, qué se espera, cuál es la motivación)
 
 ## Análisis competitivo
-(listar qué alternativas a este proyecto existen. Estas alternativas pueden ser Online/Offline, se deben indicar 3 o 4 alternativas de cada tipo, y de cada una dar 3 ventajas y 3 desventajas)
-
-Principal diferencial: los descuentos los carga la comunidad, no nosotros. Esto implica que lo escala la comunidad, no nosotros, y es más fácil que se extienda
-
 ### Alternativas OffLine
+1. Boca a Boca
+- Ventajas:
+  * Simple.
+  * La gente filtra lo que dice y no oímos de descuentos que no nos interesan tanto.
+  * Costo cero.
+ 
+- Desventajas:
+  * Escala de forma lenta.
+  * Quizás hay descuentos que no llegan a nuestros oídos.
+  * Tiene que haber personas igual de miserables que nosotros en nuestro entorno.
+
+2. Radio
+- Ventajas:
+  * Difusión aceptable.
+  * Costo cero para el usuario (sí hay costo para el comercio).
+
+- Desventajas:
+  * La gente no tiene una forma directa de validar la información y hacerse escuchar.
+  * Público muy diverso.
+  * Tengo que recordar lo que escuché y googlearlo más tarde.
+  * Cada descuento requiere un tiempo vital que no permite exponer a la mayoría.
+
+3. Cartelería
+- Ventajas:
+  * Las personas no pueden evitar verlo.
+  * Los avisos se pueden adaptar al descuento u oferta.
+
+- Desventajas:
+  * No hay una segmentación del público, todos los que pasan lo reciben.
+  * Costoso para el comercio.
+  * Difícil de mostrar la letra chica.
 
 ### Alternativas OnLine
-1. Clash: esta conectado con mil cosas y no anda bien, pero la que hagamos no va a andar asi de bien ni a palos
-La diferencia es que no es web, esta solo en el celu y te pide que instales una app. [Clash](https://www.clash.com.ar/static/index.html)
+1. Aplicación Mobile [Clash](https://www.clash.com.ar/static/index.html)
 
 - Ventajas:
   * Es la única alternativa con aplicación nativa para Android e iOS.
   * Consulta al usuario cuáles son sus cuentas bancarias y suscripciones para darle descuentos personalizados.
-  * Tiene un esquema ya armado para que los mismos comercios publiquen sus descuentos.
+  * Permite que los comercios verificados publiquen descuentos.
+  * Permite que el usuario conozca sus descuentos sin tener que loggearse.
 
 - Desventajas:
   * No puede usarse desde un navegador web. Sí o sí hay que bajar la aplicación, que no hay tal para PC.
-  * La UI de la aplicación no está bien optimizada
+  * La UI de la aplicación no está bien optimizada.
+  * No permite que usuarios publiquen descuentos, siendo menos descentralizado y poco escalable.
 
-* Comunidad de reddit ([r/DescuentosArgentina](https://www.reddit.com/r/DescuentosArgentina/))
-* - Ventajas:
-  * Es la única alternativa con aplicación nativa para Android e iOS
-  * 
+2. Comunidad de reddit ([r/DescuentosArgentina](https://www.reddit.com/r/DescuentosArgentina/))
+- Ventajas:
+  * Permite que el usuario conozca los descuentos sin tener que loggearse.
+  * Reddit es multiplataforma, por lo que el foro puede verse en cualquier dispositivo.
+  * Está mantenido por la comunidad, la cual interactúa entre sí.
 
 - Desventajas:
-  * No puede usarse desde un navegador web. Sí o sí hay que bajar la aplicación, que no hay tal para PC.
-  * La UI de la aplicación no está bien optimizada
+  * Se remite a las funcionalidades de Reddit, que son universales sin aportar el tema del foro.
+  * No hay una estructura en el sitio que organice el contenido para que la gente lo encuentre.
+  * No se publican solo descuentos, y los posteos de los usuarios son muy heterogéneos.
  
-* Ahorrando ando: cuenta de twitter de un vago individual que le deben mandar descuentos por md y los sube (https://x.com/ahorrandoandoar)
+3. Twitter de "Ahorrando con Lean" [perfil](https://x.com/ahorrandoandoar)
 
 - Ventajas:
-  * Es la única alternativa con aplicación nativa para Android e iOS
-  * 
+  * Las personas pueden interactúar acerca de los descuentos.
+  * Tiene acceso directo al público de usuarios que usa Twitter.
 
 - Desventajas:
-  * No puede usarse desde un navegador web. Sí o sí hay que bajar la aplicación, que no hay tal para PC.
-  * La UI de la aplicación no está bien optimizada
- 
-* Cupones argentina  Instagram (https://www.instagram.com/cuponesargentinaoficial/?hl=en)
+  * Hay una única persona (al menos visible), que se encarga de cargar y filtrar descuentos (poco escalable).
+  * Así como la comunidad de Reddit, carece de herramientas para encontrar los descuentos que uno necesita.
+  * Pese a tener la posibilidad, hay una baja participación del público en los posteos.
+
 * Todo Descuentos (https://www.tododescuentos.com.ar/)
-* Beneficios Argentina (https://cupones.beneficiosargentina.com/)
 
 ## Identificación de usuarios
 ### Clases de usuarios
