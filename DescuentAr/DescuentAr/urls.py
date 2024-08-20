@@ -21,6 +21,6 @@ from sitio.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', home, name = 'home'),
-    #path('sitio/', include('sitio.urls')),
+    path('', include('sitio.urls')),
+    path('accounts/', include('django.contrib.auth.urls')),
 ]
