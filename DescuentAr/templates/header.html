@@ -92,11 +92,15 @@
         </li>
         {% if user.is_authenticated %}
         <li class="nav-item" style="width: 65px;">
-          <a class="nav-link d-flex align-items-center" href="{% url 'logout' %}">cerrar sesion</a>
+          <!-- <a class="nav-link d-flex align-items-center" href="{% url 'logout' %}">Cerrar sesión</a> -->
+          <form action="{% url 'logout' %}" method="post">
+            {% csrf_token %}
+            <button type="submit">Log Out</button>
+          </form>
         </li>
         {% else %}
         <li>
-          <a class="nav-link d-flex align-items-center" href="{% url 'login' %}">Ingresar</a>
+          <a class="nav-link d-flex align-items-center" href="{% url 'login' %}">Iniciar sesión</a>
         </li>
         {% endif %}
       </ul>
