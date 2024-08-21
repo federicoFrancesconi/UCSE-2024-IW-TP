@@ -90,18 +90,21 @@
             <i class="fas fa-bookmark pe-2"></i> Watchlist
           </a>
         </li>
-        <li class="nav-item">
-          <a href="{% url 'password_change' %}">Cambiar contraseña</a>
-        </li>
         {% if user.is_authenticated %}
+        <li class="nav-item">
+          <a class="nav-link d-flex align-items-center" href="{% url 'password_change' %}">Cambiar contraseña</a>
+        </li>
         <li class="nav-item" style="width: 65px;">
           <!-- <a class="nav-link d-flex align-items-center" href="{% url 'logout' %}">Cerrar sesión</a> -->
           <form action="{% url 'logout' %}" method="post">
             {% csrf_token %}
-            <button type="submit">Cerrar sesión</button>
+            <button class="nav-link d-flex align-items-center" type="submit">Cerrar sesión</button>
           </form>
         </li>
         {% else %}
+        <li>
+          <a class="nav-link d-flex align-items-center" href="{% url 'password_reset' %}">Restablecer contraseña</a>
+        </li>
         <li>
           <a class="nav-link d-flex align-items-center" href="{% url 'login' %}">Iniciar sesión</a>
         </li>
