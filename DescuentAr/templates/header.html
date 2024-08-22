@@ -82,9 +82,11 @@
       </form>
 
       <ul class="navbar-nav ms-3">
+        {% if user.is_authenticated %}
         <li class="nav-item me-3">
-          <a class="nav-link d-flex align-items-center" href="#!">IMDbPro</a>
+          <a class="nav-link d-flex align-items-center" href="#!">Crear Descuento</a>
         </li>
+        {% endif %}
         <li class="nav-item">
           <a class="nav-link d-flex align-items-center me-3" href="#!">
             <i class="fas fa-bookmark pe-2"></i> Watchlist
