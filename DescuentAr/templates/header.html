@@ -82,10 +82,10 @@
       </form>
 
       <ul class="navbar-nav ms-3">
-        {% if user.is_authenticated %}
         <li class="nav-item me-3">
           <a class="nav-link d-flex align-items-center" href="{% url 'crear_descuento' %}">Crear Descuento</a>
         </li>
+        {% if user.is_authenticated %}
         <li class="nav-item">
           <a class="nav-link d-flex align-items-center" href="{% url 'password_change' %}">Cambiar contraseña</a>
         </li>
