@@ -15,9 +15,9 @@
   <!-- Container wrapper -->
   <div class="container">
     <!-- Navbar brand -->
-    <a class="navbar-brand" href="#"><img id="MDB-logo"
+    <!-- <a class="navbar-brand" href="#"><img id="MDB-logo"
         src="https://mdbcdn.b-cdn.net/wp-content/uploads/2018/06/logo-mdb-jquery-small.png" alt="MDB Logo"
-        draggable="false" height="30" /></a>
+        draggable="false" height="30" /></a> -->
 
     <!-- Toggle button -->
     <button class="navbar-toggler" type="button" data-mdb-toggle="collapse"
@@ -86,13 +86,6 @@
         <li class="nav-item me-3">
           <a class="nav-link d-flex align-items-center" href="{% url 'crear_descuento' %}">Crear Descuento</a>
         </li>
-        {% endif %}
-        <li class="nav-item">
-          <a class="nav-link d-flex align-items-center me-3" href="#!">
-            <i class="fas fa-bookmark pe-2"></i> Watchlist
-          </a>
-        </li>
-        {% if user.is_authenticated %}
         <li class="nav-item">
           <a class="nav-link d-flex align-items-center" href="{% url 'password_change' %}">Cambiar contraseña</a>
         </li>

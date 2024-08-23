@@ -2,10 +2,13 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse    
 from django.contrib.auth.decorators import login_required
 from .forms import DescuentoForm
+from sitio.models import *
 
 # Create your views here.
 def home(request):
-    return render(request, 'home.html', {})
+    descuentos = Descuento.objects.all()
+
+    return render(request, 'home.html', {'lista_descuentos': descuentos})
 
 
 
