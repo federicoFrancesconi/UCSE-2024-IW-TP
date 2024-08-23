@@ -16,11 +16,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from sitio.views import *
+from django.views.generic.base import TemplateView
 
-
+# El orden es importante porque django mira de arriba a abajo
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', home, name = 'home'),
-    #path('sitio/', include('sitio.urls')),
+    path("", include("sitio.urls")),
+    path("accounts/", include("accounts.urls")),
+    path('accounts/', include('django.contrib.auth.urls')),
 ]
