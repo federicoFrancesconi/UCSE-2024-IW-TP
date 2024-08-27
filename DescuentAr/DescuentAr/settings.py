@@ -149,3 +149,9 @@ EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'descuentar.app@gmail.com'
 EMAIL_HOST_PASSWORD = 'knvo cimt lscp jgqd'
+
+AUTHENTICATION_BACKENDS = [
+    'accounts.backends.EmailBackend',
+    # Seguimos teniendo el backend por defecto por las dudas que no ande el personalizado
+    'django.contrib.auth.backends.ModelBackend',
+]
