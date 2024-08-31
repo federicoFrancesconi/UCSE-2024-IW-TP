@@ -149,9 +149,7 @@ EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'descuentar.app@gmail.com'
 EMAIL_HOST_PASSWORD = 'knvo cimt lscp jgqd'
-DEFAULT_FROM_EMAIL = 'noreply@descuentar.com'
+DEFAULT_FROM_EMAIL = 'DescuentAr descuentar.app@gmail.com'
 
-# HAY QUE MODIFICARLO PARA PRODUCCION ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~``
-SITE_URL = 'http://localhost:8000'
-
+# Hacemos referencia a nuestro modelo de usuario personalizado, que pisa al default
 AUTH_USER_MODEL = 'accounts.CustomUser'

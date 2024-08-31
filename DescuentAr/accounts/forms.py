@@ -1,13 +1,15 @@
 from django import forms
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.forms import UserCreationForm
 
-# El form personalizado para login que usa email en lugar de username
+User = get_user_model()
+
+# Form personalizado para login que usa email en lugar de username
 class CustomAuthenticationForm(AuthenticationForm):
     username = forms.EmailField(label="Email", required=True)
 
-# El form personalizado para registration, que incluye email
+# Form personalizado para registration, que incluye email
 class CustomUserCreationForm(UserCreationForm):
     email = forms.EmailField(required=True)
 
@@ -19,5 +21,6 @@ class CustomUserCreationForm(UserCreationForm):
         user = super().save(commit=False)
         user.email = self.cleaned_data['email']
         if commit:
+            # No modifico el campo email_is_verified porque por default es False
             user.save()
         return user
