@@ -142,3 +142,14 @@ if 'RENDER' in os.environ:
     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
+# Settings para el envio de mails
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'descuentar.app@gmail.com'
+EMAIL_HOST_PASSWORD = 'knvo cimt lscp jgqd'
+DEFAULT_FROM_EMAIL = 'DescuentAr descuentar.app@gmail.com'
+
+# Hacemos referencia a nuestro modelo de usuario personalizado, que pisa al default
+AUTH_USER_MODEL = 'accounts.CustomUser'
