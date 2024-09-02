@@ -12,6 +12,8 @@ from rest_framework import status
 def home(request):
 
     categoria_id = request.GET.get('categoria_id')
+    fecha_hasta = request.GET.get('fecha_hasta')
+    fecha = datetime.strptime(fecha_hasta, '%Y-%m-%d').date()
     categorias = Categoria.objects.all()
 
     if categoria_id:
@@ -20,11 +22,13 @@ def home(request):
             votos_negativos=Count('voto', filter=Q(voto__voto_positivo=False))
         )
     else:
-        # Obtener todos los descuentos si no se seleccionó ninguna categoría
         descuentos = Descuento.objects.all().annotate(
             votos_positivos=Count('voto', filter=Q(voto__voto_positivo=True)),
             votos_negativos=Count('voto', filter=Q(voto__voto_positivo=False))
         )
+
+    #si trae el filtro lo hace, sino busca los vigentes 
+    descuentos = descuentos.filter(fecha_hasta <= fecha) if fecha is not None else descuentos.filter(fecha_hasta >= datetime.today())
 
     return render(request, 'home.html', {
         'lista_descuentos': descuentos,
