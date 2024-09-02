@@ -10,12 +10,27 @@ from rest_framework import status
 
 # Create your views here.
 def home(request):
-    descuentos = Descuento.objects.all().annotate(
-        votos_positivos= Count('voto', filter=Q(voto__voto_positivo=True)),
-        votos_negativos= Count('voto', filter=Q(voto__voto_positivo=False))
-    )
 
-    return render(request, 'home.html', {'lista_descuentos': descuentos})
+    categoria_id = request.GET.get('categoria_id')
+    categorias = Categoria.objects.all()
+
+    if categoria_id:
+        descuentos = Descuento.objects.filter(categoria_id=categoria_id).annotate(
+            votos_positivos=Count('voto', filter=Q(voto__voto_positivo=True)),
+            votos_negativos=Count('voto', filter=Q(voto__voto_positivo=False))
+        )
+    else:
+        # Obtener todos los descuentos si no se seleccionó ninguna categoría
+        descuentos = Descuento.objects.all().annotate(
+            votos_positivos=Count('voto', filter=Q(voto__voto_positivo=True)),
+            votos_negativos=Count('voto', filter=Q(voto__voto_positivo=False))
+        )
+
+    return render(request, 'home.html', {
+        'lista_descuentos': descuentos,
+        'categorias': categorias,
+        'categoria_seleccionada': categoria_id,
+    })
 
 
 @login_required
