@@ -5,4 +5,6 @@ from sitio.views import *
 urlpatterns = [
     path('', home, name = 'home'),
     path('crear_descuento/', crear_descuento, name='crear_descuento'),
+    path('api/guardar_voto/', guardar_voto, name='guardar_voto'),
+    path('api/obtener_votos/', obtener_votos, name='obtener_votos'),
 ]
