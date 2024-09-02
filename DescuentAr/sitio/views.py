@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404, render, redirect
 from django.http import HttpResponse    
 from django.contrib.auth.decorators import login_required
 from .forms import DescuentoForm
@@ -10,7 +10,9 @@ def home(request):
 
     return render(request, 'home.html', {'lista_descuentos': descuentos})
 
-
+def detalle_descuento(request, descuento_id):
+    descuento = get_object_or_404(Descuento, pk=descuento_id)
+    return render(request, 'detalle.html', {'descuento': descuento})
 
 @login_required
 def crear_descuento(request):

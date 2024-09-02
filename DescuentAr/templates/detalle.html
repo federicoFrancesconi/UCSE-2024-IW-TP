@@ -2,15 +2,12 @@
 
 <body>
     {% block content %}
-    <!-- <h1>Bienvenidos!</h1> -->
-    {% for descuento in lista_descuentos %}
         <div class="card">
             <h3 class="card-header">{{ descuento.nombre }}</h3>
             <div class="card-body">
             <p class="card-text">{{ descuento.descripcion }}</p>    
-            <a href="{% url 'detalle_descuento' descuento.id %}">Ver detalles</a>        
+            <p class="card-text">{{ descuento.fecha_hasta }}</p>       
             </div>
         </div>
-    {% endfor %}
     {% endblock %}
 </body>
