@@ -15,7 +15,8 @@ def home(request):
 
     categoria_id = request.GET.get('categoria_id')
     fecha_hasta = request.GET.get('fecha_hasta')
-    fecha = datetime.strptime(fecha_hasta, '%Y-%m-%d').date()
+    fecha = datetime.strptime(fecha_hasta, '%Y-%m-%d').date() if fecha_hasta else None
+
     categorias = Categoria.objects.all()
 
     if categoria_id:
@@ -30,7 +31,7 @@ def home(request):
         )
 
     #si trae el filtro lo hace, sino busca los vigentes 
-    descuentos = descuentos.filter(fecha_hasta <= fecha) if fecha is not None else descuentos.filter(fecha_hasta >= datetime.today())
+    descuentos = descuentos.filter(fecha_hasta__lt=fecha) if fecha is not None else descuentos.filter(fecha_hasta__gte=datetime.today().date())
 
     return render(request, 'home.html', {
         'lista_descuentos': descuentos,
