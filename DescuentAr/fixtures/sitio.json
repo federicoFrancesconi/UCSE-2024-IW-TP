@@ -1,0 +1,233 @@
+[
+    {
+        "model": "sitio.categoria",
+        "pk": 1,
+        "fields": {
+            "nombre": "Ropa"
+        }
+    },
+    {
+        "model": "sitio.categoria",
+        "pk": 2,
+        "fields": {
+            "nombre": "Electrónica"
+        }
+    },
+    {
+        "model": "sitio.categoria",
+        "pk": 3,
+        "fields": {
+            "nombre": "Alimentos"
+        }
+    },
+    {
+        "model": "sitio.descuento",
+        "pk": 1,
+        "fields": {
+            "nombre": "Descuento en Jeans",
+            "descripcion": "30% de descuento en jeans seleccionados",
+            "usuario_creador": 1,
+            "categoria": 1,
+            "fecha_hasta": "2024-12-31",
+            "state": "publicado"
+        }
+    },
+    {
+        "model": "sitio.descuento",
+        "pk": 2,
+        "fields": {
+            "nombre": "Descuento en TVs",
+            "descripcion": "20% de descuento en TVs",
+            "usuario_creador": 2,
+            "categoria": 2,
+            "fecha_hasta": "2024-11-30",
+            "state": "publicado"
+        }
+    },
+    {
+        "model": "sitio.descuento",
+        "pk": 3,
+        "fields": {
+            "nombre": "Descuento en Smartphones",
+            "descripcion": "15% de descuento en smartphones seleccionados",
+            "usuario_creador": 3,
+            "categoria": 2,
+            "fecha_hasta": "2024-10-15",
+            "state": "publicado"
+        }
+    },
+    {
+        "model": "sitio.descuento",
+        "pk": 4,
+        "fields": {
+            "nombre": "Descuento en Frutas",
+            "descripcion": "10% de descuento en frutas frescas",
+            "usuario_creador": 4,
+            "categoria": 3,
+            "fecha_hasta": "2024-09-30",
+            "state": "publicado"
+        }
+    },
+    {
+        "model": "sitio.descuento",
+        "pk": 5,
+        "fields": {
+            "nombre": "Descuento en Verduras",
+            "descripcion": "10% de descuento en verduras seleccionadas",
+            "usuario_creador": 5,
+            "categoria": 3,
+            "fecha_hasta": "2024-09-30",
+            "state": "publicado"
+        }
+    },
+    {
+        "model": "sitio.descuento",
+        "pk": 6,
+        "fields": {
+            "nombre": "Descuento en Calzado",
+            "descripcion": "25% de descuento en calzado deportivo",
+            "usuario_creador": 1,
+            "categoria": 1,
+            "fecha_hasta": "2024-12-01",
+            "state": "publicado"
+        }
+    },
+    {
+        "model": "sitio.descuento",
+        "pk": 7,
+        "fields": {
+            "nombre": "Descuento en Accesorios",
+            "descripcion": "15% de descuento en accesorios de moda",
+            "usuario_creador": 2,
+            "categoria": 1,
+            "fecha_hasta": "2024-10-31",
+            "state": "publicado"
+        }
+    },
+    {
+        "model": "sitio.descuento",
+        "pk": 8,
+        "fields": {
+            "nombre": "Descuento en Laptops",
+            "descripcion": "20% de descuento en laptops seleccionadas",
+            "usuario_creador": 3,
+            "categoria": 2,
+            "fecha_hasta": "2024-11-15",
+            "state": "publicado"
+        }
+    },
+    {
+        "model": "sitio.descuento",
+        "pk": 9,
+        "fields": {
+            "nombre": "Descuento en Bebidas",
+            "descripcion": "10% de descuento en bebidas",
+            "usuario_creador": 4,
+            "categoria": 3,
+            "fecha_hasta": "2024-09-30",
+            "state": "publicado"
+        }
+    },
+    {
+        "model": "sitio.descuento",
+        "pk": 10,
+        "fields": {
+            "nombre": "Descuento en Consolas",
+            "descripcion": "15% de descuento en consolas de videojuegos",
+            "usuario_creador": 5,
+            "categoria": 2,
+            "fecha_hasta": "2024-12-25",
+            "state": "publicado"
+        }
+    },
+    {
+        "model": "sitio.voto",
+        "pk": 1,
+        "fields": {
+            "usuario": 2,
+            "descuento": 1,
+            "voto_positivo": true
+        }
+    },
+    {
+        "model": "sitio.voto",
+        "pk": 2,
+        "fields": {
+            "usuario": 3,
+            "descuento": 1,
+            "voto_positivo": false
+        }
+    },
+    {
+        "model": "sitio.voto",
+        "pk": 3,
+        "fields": {
+            "usuario": 4,
+            "descuento": 2,
+            "voto_positivo": true
+        }
+    },
+    {
+        "model": "sitio.voto",
+        "pk": 4,
+        "fields": {
+            "usuario": 5,
+            "descuento": 2,
+            "voto_positivo": false
+        }
+    },
+    {
+        "model": "sitio.voto",
+        "pk": 5,
+        "fields": {
+            "usuario": 1,
+            "descuento": 3,
+            "voto_positivo": true
+        }
+    },
+    {
+        "model": "sitio.voto",
+        "pk": 6,
+        "fields": {
+            "usuario": 2,
+            "descuento": 3,
+            "voto_positivo": true
+        }
+    },
+    {
+        "model": "sitio.voto",
+        "pk": 7,
+        "fields": {
+            "usuario": 3,
+            "descuento": 4,
+            "voto_positivo": true
+        }
+    },
+    {
+        "model": "sitio.voto",
+        "pk": 8,
+        "fields": {
+            "usuario": 4,
+            "descuento": 5,
+            "voto_positivo": true
+        }
+    },
+    {
+        "model": "sitio.voto",
+        "pk": 9,
+        "fields": {
+            "usuario": 5,
+            "descuento": 6,
+            "voto_positivo": true
+        }
+    },
+    {
+        "model": "sitio.voto",
+        "pk": 10,
+        "fields": {
+            "usuario": 1,
+            "descuento": 6,
+            "voto_positivo": true
+        }
+    }
+]
