@@ -36,4 +36,4 @@ class Voto(models.Model):
     voto_positivo = models.BooleanField(default=True)
 
     def __str__(self):
-        return f"{self.usuario} - {self.descuento} - {"Positivo" if self.voto_positivo else "Negativo"}"
+        return f"{self.usuario} - {self.descuento} - {'Positivo' if self.voto_positivo else 'Negativo'}"
