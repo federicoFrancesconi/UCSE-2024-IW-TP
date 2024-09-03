@@ -3,14 +3,57 @@
 <body>
     {% block content %}
     <!-- <h1>Bienvenidos!</h1> -->
+    <form method="GET">
+        <label for="categoria">Categoría:</label>
+        <select name="categoria_id">
+            <option value="">...</option>
+            {% for categoria in categorias %}
+                <option value="{{ categoria.id }}">{{ categoria.nombre }}</option>
+            {% endfor %}
+        </select>
+    
+        <label for="fecha_hasta">Fecha Hasta:</label>
+        <input type="date" name="fecha_hasta">
+    
+        <button type="submit">Filtrar</button>
+    </form>
+
     {% for descuento in lista_descuentos %}
         <div class="card">
             <h3 class="card-header">{{ descuento.nombre }}</h3>
             <div class="card-body">
             <p class="card-text">{{ descuento.descripcion }}</p>    
-            <a href="{% url 'detalle_descuento' descuento.id %}">Ver detalles</a>        
+            <a href="{% url 'detalle_descuento' descuento.id %}">Ver detalles</a> 
+            
+            <p>Votos positivos: <span id="votos-positivos-{{ descuento.id }}"></span></p>
+            <p>Votos negativos: <span id="votos-negativos-{{ descuento.id }}"></span></p>
+
+
             </div>
         </div>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script>
+            $(document).ready(function()   
+     {
+                var descuentoId = {{ descuento.id }};
+                var url = "api/obtener_votos/" + descuentoId + "/";
+    
+                $.ajax({
+                    url: url,
+                    type: "GET",
+                    dataType: "json",
+                    success: function(data) {
+                        $('#votos-positivos-' + descuentoId).text(data.votos_positivos);
+                        $('#votos-negativos-' + descuentoId).text(data.votos_negativos);
+                    },
+                    error: function(error) {
+                        console.error("Error al obtener los votos:", error);
+                    }
+                });
+            });
+        </script>
+    
     {% endfor %}
     {% endblock %}
 </body>
