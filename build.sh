@@ -10,3 +10,7 @@ python manage.py migrate
 if [ "$CREATE_SUPERUSER" == "true" ]; then
     python manage.py createsuperuser --username admin --email "fedefrancesconiff@gmail.com" --noinput || true
 fi
+
+# Carga de descuentos
+python manage.py loaddata accounts.json
+python manage.py loaddata sitio.json
