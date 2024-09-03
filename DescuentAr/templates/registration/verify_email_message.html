@@ -1,0 +1,13 @@
+<div style="background-color: #c2c2c2; padding: 15px;">
+    <h2 style="margin: 0; padding: 10px; border-top-left-radius: 10px; border-top-right-radius: 10px; background-color: #5865F2; color: #ffffff;">Verificar Correo Electrónico</h2>
+    <div style="margin: 0; padding: 15px; background-color: #ffffff;">
+        <p>Hola {{ user.username }},</p>
+        <p>Creaste una cuenta en DescuentAr, pero no verificaste tu correo. Hacé clic en el botón para verificarlo.</p>
+        <a href="{{ request.scheme }}://{{ domain }}{% url 'verify-email-confirm' uidb64=uid token=token %}" style="border: 0; color: #ffffff; background-color: #5865F2; padding: 15px; font-weight: bold; text-decoration: none; border-radius: 5px;">
+            Verificar Email
+        </a>
+        <p style="margin-top: 40px;">O bien copiate este link en la barra de búsqueda del navegador</p>
+        <p>{{ request.scheme }}://{{ domain }}{% url 'verify-email-confirm' uidb64=uid token=token %}</p>
+        <p>El equipo de DescuentAr</p>
+    </div>
+</div>
