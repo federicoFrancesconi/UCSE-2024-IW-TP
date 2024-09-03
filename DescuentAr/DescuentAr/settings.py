@@ -153,3 +153,5 @@ DEFAULT_FROM_EMAIL = 'DescuentAr descuentar.app@gmail.com'
 
 # Hacemos referencia a nuestro modelo de usuario personalizado, que pisa al default
 AUTH_USER_MODEL = 'accounts.CustomUser'
+
+FIXTURE_DIRS =  [BASE_DIR / "fixtures"]
