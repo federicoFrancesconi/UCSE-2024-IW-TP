@@ -16,27 +16,31 @@ def home(request):
     categoria_id = request.GET.get('categoria_id')
     fecha_hasta = request.GET.get('fecha_hasta')
     fecha = datetime.strptime(fecha_hasta, '%Y-%m-%d').date() if fecha_hasta else None
+    cant_votos = request.GET.get('cant_votos')
 
     categorias = Categoria.objects.all()
 
+    descuentos = Descuento.objects.all().annotate(
+        votos_positivos=Count('voto', filter=Q(voto__voto_positivo=True)),
+        votos_negativos=Count('voto', filter=Q(voto__voto_positivo=False)),
+        diferencia_votos=Count('voto', filter=Q(voto__voto_positivo=True)) - Count('voto', filter=Q(voto__voto_positivo=False))
+    )
+
     if categoria_id:
-        descuentos = Descuento.objects.filter(categoria_id=categoria_id).annotate(
-            votos_positivos=Count('voto', filter=Q(voto__voto_positivo=True)),
-            votos_negativos=Count('voto', filter=Q(voto__voto_positivo=False))
-        )
-    else:
-        descuentos = Descuento.objects.all().annotate(
-            votos_positivos=Count('voto', filter=Q(voto__voto_positivo=True)),
-            votos_negativos=Count('voto', filter=Q(voto__voto_positivo=False))
-        )
+        descuentos = descuentos.filter(categoria_id = categoria_id)
+    
 
     #si trae el filtro lo hace, sino busca los vigentes 
     descuentos = descuentos.filter(fecha_hasta__lt=fecha) if fecha is not None else descuentos.filter(fecha_hasta__gte=datetime.today().date())
+
+    if cant_votos:
+        descuentos = descuentos.filter(diferencia_votos__gte=int(cant_votos))
 
     return render(request, 'home.html', {
         'lista_descuentos': descuentos,
         'categorias': categorias,
         'categoria_seleccionada': categoria_id,
+        'cant_votos_seleccionada': cant_votos,
     })
 
 def detalle_descuento(request, descuento_id):
