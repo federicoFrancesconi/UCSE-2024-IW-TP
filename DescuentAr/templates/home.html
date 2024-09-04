@@ -3,13 +3,92 @@
 <body>
     {% block content %}
     <!-- <h1>Bienvenidos!</h1> -->
+    <form method="GET">
+        <label for="categoria">Categoría:</label>
+        <select name="categoria_id">
+            <option value="">...</option>
+            {% for categoria in categorias %}
+                <option value="{{ categoria.id }}">{{ categoria.nombre }}</option>
+            {% endfor %}
+        </select>
+    
+        <label for="fecha_hasta">Fecha Hasta:</label>
+        <input type="date" name="fecha_hasta">
+    
+        <label for ="cant_votos">Cantidad votos:</label>
+        <input type="form_control" id="formControl" name = "cant_votos">
+
+        <button type="submit">Filtrar</button>
+    </form>
+
     {% for descuento in lista_descuentos %}
         <div class="card">
             <h3 class="card-header">{{ descuento.nombre }}</h3>
             <div class="card-body">
-            <p class="card-text">{{ descuento.descripcion }}</p>            
+            <p class="card-text">{{ descuento.descripcion }}</p>    
+            <a href="{% url 'detalle_descuento' descuento.id %}">Ver detalles</a> 
+            
+            <div>
+                <button class="btn" id="green"><i class="green fa fa-thumbs-up fa-lg" aria-hidden="true"></i></button>
+                 <span id="votos-positivos-{{ descuento.id }}"></span>
+            </div>
+            <div>
+                <button class="btn" id="red"><i class="fa fa-thumbs-down fa-lg" aria-hidden="true"></i></button>
+                <span id="votos-negativos-{{ descuento.id }}"></span>
+            </div>
+
+
             </div>
         </div>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script>
+            $(document).ready(function()   
+     {
+                var descuentoId = {{ descuento.id }};
+                var url = "api/obtener_votos/" + descuentoId + "/";
+    
+                $.ajax({
+                    url: url,
+                    type: "GET",
+                    dataType: "json",
+                    success: function(data) {
+                        $('#votos-positivos-' + descuentoId).text(data.votos_positivos);
+                        $('#votos-negativos-' + descuentoId).text(data.votos_negativos);
+                    },
+                    error: function(error) {
+                        console.error("Error al obtener los votos:", error);
+                    }
+                });
+            });
+        </script>
+    
     {% endfor %}
     {% endblock %}
 </body>
+
+
+<style>
+    body{
+  margin: 40px;
+}
+
+button{
+  cursor: pointer;
+  outline: 0;
+  color: #AAA;
+
+}
+
+.btn:focus {
+  outline: none;
+}
+
+.green{
+  color: green;
+}
+
+.red{
+  color: red;
+}
+</style>

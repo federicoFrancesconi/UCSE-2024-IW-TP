@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+<body>
+    {% block content %}
+        <div class="card">
+            <h3 class="card-header">{{ descuento.nombre }}</h3>
+            <div class="card-body">
+            <p class="card-text">{{ descuento.descripcion }}</p>    
+            <p class="card-text">{{ descuento.fecha_hasta }}</p>       
+            </div>
+        </div>
+    {% endblock %}
+</body>
