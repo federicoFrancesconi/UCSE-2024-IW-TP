@@ -15,6 +15,9 @@
         <label for="fecha_hasta">Fecha Hasta:</label>
         <input type="date" name="fecha_hasta">
     
+        <label for ="cant_votos">Cantidad votos:</label>
+        <input type="form_control" id="formControl" name = "cant_votos">
+
         <button type="submit">Filtrar</button>
     </form>
 
@@ -25,8 +28,14 @@
             <p class="card-text">{{ descuento.descripcion }}</p>    
             <a href="{% url 'detalle_descuento' descuento.id %}">Ver detalles</a> 
             
-            <p>Votos positivos: <span id="votos-positivos-{{ descuento.id }}"></span></p>
-            <p>Votos negativos: <span id="votos-negativos-{{ descuento.id }}"></span></p>
+            <div>
+                <button class="btn" id="green"><i class="green fa fa-thumbs-up fa-lg" aria-hidden="true"></i></button>
+                 <span id="votos-positivos-{{ descuento.id }}"></span>
+            </div>
+            <div>
+                <button class="btn" id="red"><i class="fa fa-thumbs-down fa-lg" aria-hidden="true"></i></button>
+                <span id="votos-negativos-{{ descuento.id }}"></span>
+            </div>
 
 
             </div>
@@ -57,3 +66,29 @@
     {% endfor %}
     {% endblock %}
 </body>
+
+
+<style>
+    body{
+  margin: 40px;
+}
+
+button{
+  cursor: pointer;
+  outline: 0;
+  color: #AAA;
+
+}
+
+.btn:focus {
+  outline: none;
+}
+
+.green{
+  color: green;
+}
+
+.red{
+  color: red;
+}
+</style>
