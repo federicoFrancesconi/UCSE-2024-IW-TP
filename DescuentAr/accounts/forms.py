@@ -12,6 +12,8 @@ class CustomAuthenticationForm(AuthenticationForm):
 # Form personalizado para registration, que incluye email
 class CustomUserCreationForm(UserCreationForm):
     email = forms.EmailField(required=True)
+    # Anulamos la seccion de habilitar autenticación basada en contraseñas
+    usable_password = None
 
     class Meta:
         model = User
