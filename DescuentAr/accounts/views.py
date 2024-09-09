@@ -24,9 +24,10 @@ class CustomLoginView(LoginView):
         user = authenticate(request=self.request, username=username, password=password)
 
         if user is not None:
+            # Loggeamos manualmente el usuario para que podamos acceder a sus datos de necesitar verificar el mail
+            login(self.request, user)
+
             if user.email_is_verified:
-                # Solo permitimos loggear el usuario si su correo fue verificado
-                login(self.request, user)
                 return redirect('home')
             else:
                 # Si el email no fue verificado, redireccionamos a la vista de verificación
