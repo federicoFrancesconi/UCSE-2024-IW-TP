@@ -61,8 +61,13 @@ def crear_descuento(request):
         form = DescuentoForm()
     return render(request, 'crear_descuento.html', {'form': form})
 
+@login_required
+def mis_publicaciones(request):
+    descuentos = Descuento.objects.filter(usuario_creador=request.user)
 
-
+    return render(request, 'mis_publicaciones.html', {
+        'lista_descuentos': descuentos,
+        })
 
 ##################################### apis ###############################
 
