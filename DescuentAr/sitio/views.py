@@ -56,7 +56,7 @@ def crear_descuento(request):
             descuento.usuario_creador = request.user
             descuento.state = 'revision'
             descuento.save()
-            return redirect('home.html')  # Redirige a una página de éxito
+            return redirect('home')
     else:
         form = DescuentoForm()
     return render(request, 'crear_descuento.html', {'form': form})
