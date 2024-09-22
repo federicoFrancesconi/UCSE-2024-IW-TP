@@ -4,8 +4,6 @@ from django.db.models.fields import DateTimeField
 import datetime, time
 from django.conf import settings
 
-# Create your models here.
-
 STATES_DESCUENTO = [
     ('publicado', 'PUBLICADO'),
     ('revision', 'REVISION'),
@@ -29,7 +27,6 @@ class Descuento(models.Model):
 
     def __str__(self):
         return self.nombre
-    
 
 class Voto(models.Model):
     usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
@@ -38,3 +35,10 @@ class Voto(models.Model):
 
     def __str__(self):
         return f"{self.usuario} - {self.descuento} - {'Positivo' if self.voto_positivo else 'Negativo'}"
+    
+class DescuentoGuardado(models.Model):
+    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    descuento = models.ForeignKey(Descuento, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.usuario} - {self.descuento}"
