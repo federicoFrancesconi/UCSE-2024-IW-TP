@@ -127,3 +127,52 @@ def guardar_voto(request):
 
     except Descuento.DoesNotExist:
         return Response({"error": "Descuento no encontrado"}, status=status.HTTP_404_NOT_FOUND)
+    
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def obtener_guardado(request, descuento_id):
+    usuario = request.user
+
+    try:
+        descuento = Descuento.objects.get(pk=descuento_id)
+
+        descuento_existente = DescuentoGuardado.objects.filter(descuento=descuento, usuario=usuario).first()
+
+        guardado = descuento_existente is not None
+        
+        data = {
+            'guardado': guardado
+        }    
+        return Response(data)
+    
+    except Descuento.DoesNotExist:
+        return Response({'error': 'Descuento no encontrado'}, status=status.HTTP_404_NOT_FOUND)
+
+# Usamos una lógica de tipo "toggle": si estaba guardado, lo borramos, si no, lo guardamos
+# Si bien los principios HTTP dicen que esto se separa
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def guardar_descuento(request):
+    usuario = request.user
+    descuento_id = request.data.get('descuento_id')
+
+    try:
+        descuento = Descuento.objects.get(pk=descuento_id)
+
+        # Verificar si el usuario ya guardo este descuento
+        descuento_existente = DescuentoGuardado.objects.filter(descuento=descuento, usuario=usuario).first()
+
+        if descuento_existente is not None:
+            descuento_existente.delete()
+            return Response({"message": "Descuento quitado de guardados"}, status=status.HTTP_200_OK)
+        else:
+            DescuentoGuardado.objects.create(
+                usuario=usuario,
+                descuento=descuento
+            )
+    
+            return Response({"message": "Descuento guardado correctamente"}, status=status.HTTP_201_CREATED)
+
+    except Descuento.DoesNotExist:
+        return Response({"error": "Descuento no encontrado"}, status=status.HTTP_404_NOT_FOUND)

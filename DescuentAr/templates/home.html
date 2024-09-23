@@ -2,7 +2,6 @@
 
 <body>
     {% block content %}
-    <!-- <h1>Bienvenidos!</h1> -->
     <form method="GET">
         <label for="categoria">Categoría:</label>
         <select name="categoria_id">
@@ -25,31 +24,35 @@
         <div class="card">
             <h3 class="card-header">{{ descuento.nombre }}</h3>
             <div class="card-body">
-            <p class="card-text">{{ descuento.descripcion }}</p>    
-            <a href="{% url 'detalle_descuento' descuento.id %}">Ver detalles</a> 
-            
-            <div>
-                <button class="btn" id="green"><i class="green fa fa-thumbs-up fa-lg" aria-hidden="true"></i></button>
-                 <span id="votos-positivos-{{ descuento.id }}"></span>
-            </div>
-            <div>
-                <button class="btn" id="red"><i class="fa fa-thumbs-down fa-lg" aria-hidden="true"></i></button>
-                <span id="votos-negativos-{{ descuento.id }}"></span>
-            </div>
+                <p class="card-text">{{ descuento.descripcion }}</p>    
+                <a href="{% url 'detalle_descuento' descuento.id %}">Ver detalles</a> 
+                
+                <div>
+                    <button class="btn" id="green"><i class="green fa fa-thumbs-up fa-lg" aria-hidden="true"></i></button>
+                    <span id="votos-positivos-{{ descuento.id }}"></span>
+                </div>
 
+                <div>
+                    <button class="btn" id="red"><i class="fa fa-thumbs-down fa-lg" aria-hidden="true"></i></button>
+                    <span id="votos-negativos-{{ descuento.id }}"></span>
+                </div>
 
+                <div>
+                    <button id="guardar-{{ descuento.id }}" class="btn btn-danger">Guardar</button>
+                </div>
             </div>
         </div>
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script>
-            $(document).ready(function()   
-     {
+            $(document).ready(function()
+            {
                 var descuentoId = {{ descuento.id }};
-                var url = "api/obtener_votos/" + descuentoId + "/";
+                var url_votos = "api/obtener_votos/" + descuentoId + "/";
+                var url_guardado = "api/obtener_guardado/" + descuentoId + "/";
     
                 $.ajax({
-                    url: url,
+                    url: url_votos,
                     type: "GET",
                     dataType: "json",
                     success: function(data) {
@@ -58,6 +61,46 @@
                     },
                     error: function(error) {
                         console.error("Error al obtener los votos:", error);
+                    }
+                });
+
+                $.ajax({
+                    url: url_guardado,
+                    type: "GET",
+                    dataType: "json",
+                    success: function(data) {
+                        if (data.guardado) {
+                            $('#guardar-' + descuentoId).text("Quitar de guardados");
+                        } else {
+                            $('#guardar-' + descuentoId).text("Guardar");
+                        }
+                    },
+                    error: function(error) {
+                        console.error("Error al obtener los votos:", error);
+                    }
+                });
+            });
+
+            $('#guardar-' + {{ descuento.id }}).on('click', function() {
+                var descuentoId = {{ descuento.id }};
+
+                $.ajax({
+                    url: "{% url 'guardar_descuento' %}",
+                    type: "POST",
+                    data: {
+                        descuento_id: descuentoId,
+                        csrfmiddlewaretoken: '{{ csrf_token }}'
+                    },
+                    success: function(response) {
+                        // Update button text based on the response
+                        if (response.message === "Descuento guardado correctamente") {
+                            $('#guardar-' + descuentoId).text("Quitar de guardados");
+                        } else {
+                            $('#guardar-' + descuentoId).text("Guardar");
+                        }
+                    },
+                    error: function(error) {
+                        console.error("Error al guardar/quitar el descuento:", error);
                     }
                 });
             });
