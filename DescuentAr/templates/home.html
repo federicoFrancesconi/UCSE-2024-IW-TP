@@ -1,4 +1,9 @@
 {% extends "base.html" %}
+{% load static %}
+
+<head>
+    <link rel="stylesheet" href="{% static 'sitio/css/home.css' %}">
+</head>
 
 <body>
     {% block content %}
@@ -109,29 +114,3 @@
     {% endfor %}
     {% endblock %}
 </body>
-
-
-<style>
-    body{
-  margin: 40px;
-}
-
-button{
-  cursor: pointer;
-  outline: 0;
-  color: #AAA;
-
-}
-
-.btn:focus {
-  outline: none;
-}
-
-.green{
-  color: green;
-}
-
-.red{
-  color: red;
-}
-</style>
