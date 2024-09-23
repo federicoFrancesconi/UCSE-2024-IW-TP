@@ -9,4 +9,7 @@ urlpatterns = [
     path('api/guardar_voto/', guardar_voto, name='guardar_voto'),
     path('api/obtener_votos/<int:descuento_id>/', obtener_votos, name='obtener_votos'),
     path('detalle/<int:descuento_id>/', detalle_descuento, name='detalle_descuento'),
+    path('guardados/', guardados, name='guardados'),
+    path('api/obtener_guardado/<int:descuento_id>/', obtener_guardado, name='obtener_guardado'),
+    path('api/guardar_descuento/', guardar_descuento, name='guardar_descuento'),
 ]

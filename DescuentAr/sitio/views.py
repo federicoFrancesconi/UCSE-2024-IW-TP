@@ -69,6 +69,16 @@ def mis_publicaciones(request):
         'lista_descuentos': descuentos,
         })
 
+@login_required
+def guardados(request):
+    descuentos_guardados = DescuentoGuardado.objects.filter(usuario=request.user)
+
+    descuentos = [dg.descuento for dg in descuentos_guardados]
+
+    return render(request, 'guardados.html', {
+        'lista_descuentos': descuentos,
+        })
+
 ##################################### apis ###############################
 
 @api_view(['GET'])
