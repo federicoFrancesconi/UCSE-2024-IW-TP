@@ -102,7 +102,7 @@ def obtener_votos(request, descuento_id):
 @permission_classes([IsAuthenticated])
 def guardar_voto(request):
     descuento_id = request.data.get('descuento_id')
-    voto_positivo = request.data.get('voto_positivo')  # True por defecto si no se envía
+    voto_positivo = request.data.get('voto_positivo') == 'true'  # True por defecto si no se envía
 
     try:
         descuento = Descuento.objects.get(pk=descuento_id)

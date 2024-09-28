@@ -37,12 +37,12 @@
                     <a href="{% url 'detalle_descuento' descuento.id %}">Ver detalles</a>
                     {% if descuento.usuario_creador.id != user.id %}
                     <div>
-                        <button class="btn" id="green"><i class="green fa fa-thumbs-up fa-lg" aria-hidden="true"></i></button>
+                        <button class="btn" id="green-{{ descuento.id }}" data-descuento-id="{{ descuento.id }}"><i class="green fa fa-thumbs-up fa-lg" aria-hidden="true"></i></button>
                         <span id="votos-positivos-{{ descuento.id }}"></span>
                     </div>
 
                     <div>
-                        <button class="btn" id="red"><i class="fa fa-thumbs-down fa-lg" aria-hidden="true"></i></button>
+                        <button class="btn" id="red-{{ descuento.id }}" data-descuento-id="{{ descuento.id }}"><i class="fa fa-thumbs-down fa-lg" aria-hidden="true"></i></button>
                         <span id="votos-negativos-{{ descuento.id }}"></span>
                     </div>
 
