@@ -9,6 +9,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.db.models import Count, Q
 from datetime import datetime
+from django.http import JsonResponse
 
 # Create your views here.
 def home(request):
@@ -78,6 +79,39 @@ def guardados(request):
     return render(request, 'guardados.html', {
         'lista_descuentos': descuentos,
         })
+
+
+
+@login_required
+def gestionar_suscripciones(request):
+    if request.method == 'POST':
+        categorias_ids = request.POST.getlist('categorias')
+        
+        for categoria_id in categorias_ids:
+            categoria = get_object_or_404(Categoria, id=categoria_id)
+
+            # Verificamos si el usuario ya está suscrito
+            suscripcion_existente = SuscripcionCategoria.objects.filter(usuario=request.user, categoria=categoria).first()
+
+            if suscripcion_existente:
+                # Si la suscripción existe, quitamos la suscripción (desuscribir)
+                suscripcion_existente.delete()
+            else:
+                # Si no existe, crear la suscripción (suscribir)
+                SuscripcionCategoria.objects.create(usuario=request.user, categoria=categoria)
+
+        return JsonResponse({"message": "Suscripciones actualizadas correctamente."}, status=200)
+    
+    else:
+        # Mostrar el formulario con las categorías y suscripciones actuales
+        categorias = Categoria.objects.all()
+        suscripciones_usuario = SuscripcionCategoria.objects.filter(usuario=request.user).values_list('categoria_id', flat=True)
+        return render(request, 'gestionar_suscripciones.html', {
+            'categorias': categorias,
+            'suscripciones_usuario': suscripciones_usuario
+        })
+
+
 
 ##################################### apis ###############################
 

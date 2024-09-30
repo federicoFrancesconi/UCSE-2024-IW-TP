@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+    <form method="POST"></form>
+        {% csrf_token %}
+        <h2>Suscripciones a Categorías</h2>
+        <div>
+            {% for categoria in categorias %}
+                <label>
+                    <input type="checkbox" name="categorias" value="{{ categoria.id }}"
+                    {% if categoria.id in suscripciones_usuario %}checked{% endif %}>
+                    {{ categoria.nombre }}  <!-- Ajusta esto según el campo 'nombre' en tu modelo de Categoría -->
+                </label>
+                <br>
+            {% endfor %}
+        </div>
+        <button type="submit">Actualizar Suscripciones</button>
+    </form>
+{% endblock %}

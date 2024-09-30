@@ -42,3 +42,8 @@ class DescuentoGuardado(models.Model):
 
     def __str__(self):
         return f"{self.usuario} - {self.descuento}"
+    
+
+class SuscripcionCategoria(models.Model):
+    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE, blank = True, null= True)
