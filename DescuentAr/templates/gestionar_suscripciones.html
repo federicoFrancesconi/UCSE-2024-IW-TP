@@ -2,19 +2,24 @@
 {% load static %}
 
 {% block content %}
-    <form method="POST"></form>
-        {% csrf_token %}
-        <h2>Suscripciones a Categorías</h2>
-        <div>
-            {% for categoria in categorias %}
-                <label>
-                    <input type="checkbox" name="categorias" value="{{ categoria.id }}"
-                    {% if categoria.id in suscripciones_usuario %}checked{% endif %}>
-                    {{ categoria.nombre }}  <!-- Ajusta esto según el campo 'nombre' en tu modelo de Categoría -->
-                </label>
-                <br>
-            {% endfor %}
-        </div>
-        <button type="submit">Actualizar Suscripciones</button>
-    </form>
+    <h2>Suscripciones a Categorías</h2>
+    <div>
+        {% for categoria in categorias %}
+            <div class="categoria card" data-categoria-id="{{ categoria.id }}" style="width: 18rem;">
+                <div class="card-body">
+                <h5 class="card-title">{{ categoria.nombre }}</h5>
+                <div>
+                    {% if categoria.id in categorias_suscritas %}
+                        <!-- Botón para desuscribirse -->
+                        <button class="btn btn-danger" id="btn-desuscribirse-{{ categoria.id }}" data-id="{{ categoria.id }}">Desuscribirse</button>
+                    {% else %}
+                        <!-- Botón para suscribirse -->
+                        <button class="btn btn-primary" id="btn-suscribirse-{{ categoria.id }}" data-id="{{ categoria.id }}">Suscribirse</button>
+                    {% endif %}
+                </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>   
+    <script src="{% static 'sitio/js/gestionar_suscripciones.js' %}"></script>
 {% endblock %}

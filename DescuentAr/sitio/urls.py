@@ -12,5 +12,7 @@ urlpatterns = [
     path('guardados/', guardados, name='guardados'),
     path('api/obtener_guardado/<int:descuento_id>/', obtener_guardado, name='obtener_guardado'),
     path('api/guardar_descuento/', guardar_descuento, name='guardar_descuento'),
-    path('gestionar_suscripciones/', gestionar_suscripciones, name='gestionar_suscripciones'),
+    path('suscripciones/', gestionar_suscripciones, name='gestionar_suscripciones'),
+    path('api/suscribir_categoria/', suscribir_categoria, name='suscribir_categoria'),
+    path('api/desuscribir_categoria/', desuscribir_categoria, name='desuscribir_categoria'),
 ]
