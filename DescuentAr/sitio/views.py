@@ -114,6 +114,7 @@ def guardar_voto(request):
                 voto_existente.save()
                 return Response({"message": "Voto actualizado correctamente"}, status=status.HTTP_200_OK)
             else:
+                print("ya has votado antes")
                 return Response({"error": "Ya has votado por este descuento"}, status=status.HTTP_400_BAD_REQUEST)
 
         else:
