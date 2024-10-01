@@ -7,26 +7,34 @@
 
 <body>
     {% block content %}
-        <form method="GET">
-            <label for="categoria">Categoría:</label>
-            <select name="categoria_id">
-                <option value="">...</option>
-                {% for categoria in categorias %}
-                    <option value="{{ categoria.id }}">{{ categoria.nombre }}</option>
-                {% endfor %}
-            </select>
-        
-            <label for="fecha_hasta">Fecha Hasta:</label>
-            <input type="date" name="fecha_hasta">
-        
-            <label for ="cant_votos">Cantidad votos:</label>
-            <input type="form_control" id="formControl" name = "cant_votos">
-
-            <button type="submit">Filtrar</button>
-        </form>
-
-        <!--Usamos este atributo para saber el csrf_token en JavaScript-->
-        <meta name="csrf-token" content="{{ csrf_token }}">
+    <!-- <h1>Bienvenidos!</h1> -->
+    <form method="GET">
+        <div class="form-row">
+            <div class="row">
+                <div class="form-group col-md-3">
+                    <label for="categoria">Categoría:</label>
+                    <select name="categoria_id" class="form-control">
+                        <option value="">...</option>
+                        {% for categoria in categorias %}
+                            <option value="{{ categoria.id }}">{{ categoria.nombre }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group col-md-3">
+                    <label for="fecha_hasta">Fecha Hasta:</label>
+                    <input type="date" name="fecha_hasta" class="form-control">
+                </div>
+                <div class="form-group col-md-3">
+                    <label for ="cant_votos">Cantidad votos:</label>
+                    <input type="form_control" id="formControl" name = "cant_votos" class="form-control">
+                </div>
+                <div class="form-group col-md-4">
+                    <button class="btn btn-primary" type="submit">Filtrar</button>
+                </div>
+            </div>
+        </div>
+    </form>
+    <meta name="csrf-token" content="{{ csrf_token }}">
 
         {% for descuento in lista_descuentos %}
             <!--Usamos este atributo para saber el id de cada descuento en JavaScript-->
