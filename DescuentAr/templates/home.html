@@ -4,21 +4,30 @@
     {% block content %}
     <!-- <h1>Bienvenidos!</h1> -->
     <form method="GET">
-        <label for="categoria">Categoría:</label>
-        <select name="categoria_id">
-            <option value="">...</option>
-            {% for categoria in categorias %}
-                <option value="{{ categoria.id }}">{{ categoria.nombre }}</option>
-            {% endfor %}
-        </select>
-    
-        <label for="fecha_hasta">Fecha Hasta:</label>
-        <input type="date" name="fecha_hasta">
-    
-        <label for ="cant_votos">Cantidad votos:</label>
-        <input type="form_control" id="formControl" name = "cant_votos">
-
-        <button type="submit">Filtrar</button>
+        <div class="form-row">
+            <div class="row">
+                <div class="form-group col-md-3">
+                    <label for="categoria">Categoría:</label>
+                    <select name="categoria_id" class="form-control">
+                        <option value="">...</option>
+                        {% for categoria in categorias %}
+                            <option value="{{ categoria.id }}">{{ categoria.nombre }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group col-md-3">
+                    <label for="fecha_hasta">Fecha Hasta:</label>
+                    <input type="date" name="fecha_hasta" class="form-control">
+                </div>
+                <div class="form-group col-md-3">
+                    <label for ="cant_votos">Cantidad votos:</label>
+                    <input type="form_control" id="formControl" name = "cant_votos" class="form-control">
+                </div>
+                <div class="form-group col-md-4">
+                    <button class="btn btn-primary" type="submit">Filtrar</button>
+                </div>
+            </div>
+        </div>
     </form>
 
     {% for descuento in lista_descuentos %}

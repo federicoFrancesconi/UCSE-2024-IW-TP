@@ -6,13 +6,13 @@
     <title>DescuentAr</title>
 
     <!-- cdn bootstrap -->
-    <script src="https://use.fontawesome.com/fe459689b4.js"></script>
+    <script src="https://kit.fontawesome.com/b4bd295ebb.js" crossorigin="anonymous"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 </head>
 <body>
 
     <!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar navbar-expand-lg navbar-dark mi_navbar">
   <!-- Container wrapper -->
   <div class="container">
     
@@ -28,50 +28,13 @@
       <ul class="navbar-nav me-3">
         <li class="nav-item">
           <a class="nav-link active d-flex align-items-center" aria-current="page" href="{% url 'home' %}"><i
-              class="fas fa-bars pe-2"></i>Menu</a>
+              class="fas fa-house"></i></a>
         </li>
       </ul>
       <!-- Left links -->
 
       <form class="d-flex align-items-center w-100 form-search">
         <div class="input-group">
-          <button class="btn btn-light dropdown-toggle shadow-0" type="button" data-mdb-toggle="dropdown"
-            aria-expanded="false" style="padding-bottom: 0.4rem;">
-            All
-          </button>
-          <ul class="dropdown-menu dropdown-menu-dark fa-ul">
-            <li>
-              <a class="dropdown-item" href="#"><span class="fa-li pe-2"><i class="fas fa-search"></i></span>All</a>
-            </li>
-            <li>
-              <a class="dropdown-item" href="#"><span class="fa-li pe-2"><i
-                    class="fas fa-film"></i></span>Titles</a>
-            </li>
-            <li>
-              <a class="dropdown-item" href="#"><span class="fa-li pe-2"><i class="fas fa-tv"></i></span>TV
-                Episodes</a>
-            </li>
-            <li>
-              <a class="dropdown-item" href="#"><span class="fa-li pe-2"><i
-                    class="fas fa-user-friends"></i></span>Celebs</a>
-            </li>
-            <li>
-              <a class="dropdown-item" href="#"><span class="fa-li pe-2"><i
-                    class="fas fa-building"></i></span>Companies</a>
-            </li>
-            <li>
-              <a class="dropdown-item" href="#"><span class="fa-li pe-2"><i
-                    class="fas fa-key"></i></span>Keywords</a>
-            </li>
-            <li>
-              <hr class="dropdown-divider" />
-            </li>
-            <li>
-              <a class="dropdown-item" href="#"><span class="fa-li pe-2"><i
-                    class="fas fa-search-plus"></i></span>Advanced
-                search<i class="fas fa-chevron-right ps-2"></i></a>
-            </li>
-          </ul>
           <input type="search" class="form-control" placeholder="Search" aria-label="Search" />
         </div>
         <a href="#!" class="text-white"><i class="fas fa-search ps-3"></i></a>
@@ -132,4 +95,9 @@
   position: relative;
   left: 0;
 }
+
+.mi_navbar {
+  background-color: #001F3F
+}
+
 </style>
