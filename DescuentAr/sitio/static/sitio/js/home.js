@@ -62,6 +62,57 @@ function obtener_votos_general(descuentos_id) {
     });
 }
 
+function enviarVoto(descuentoId, votoPositivo) {
+    $.ajax({
+        url: '/api/guardar_voto/',
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': getCookie('csrftoken')  // Incluye el token CSRF si es necesario
+        },
+        data: {
+            'descuento_id': descuentoId,  // ID del descuento
+            'voto_positivo': votoPositivo  // Voto positivo o negativo
+        },
+        success: function (response) {       
+            actualizarEstadoBotones(descuentoId, votoPositivo);  // Actualiza el color de los botones
+            obtener_votos(descuentoId);  // Actualiza el número de votos en pantalla
+        },
+        error: function (response) {
+            alert(response.responseJSON.error);  // Muestra el error si ocurre
+        }
+    });
+}
+
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+function actualizarEstadoBotones(descuentoId, votoPositivo) {
+    var botonPositivo = $('#green-' + descuentoId);
+    var botonNegativo = $('#red-' + descuentoId);
+
+    if (votoPositivo) {
+        // Voto positivo: verde para el botón positivo, quita el rojo del negativo
+        botonPositivo.css('color', 'green');
+        botonNegativo.css('color', 'black');
+    } else {
+        // Voto negativo: rojo para el botón negativo, quita el verde del positivo
+        botonNegativo.css('color', 'red');
+        botonPositivo.css('color', 'black');
+    }
+}
+
 function on_page_load() {
     const descuentos = document.querySelectorAll("[data-descuento-id]");
 
@@ -70,6 +121,14 @@ function on_page_load() {
     descuentos_id.forEach(descuentoId => {
         $('#guardar-' + descuentoId).on('click', function() {
             guardar_descuento(descuentoId)
+        });
+
+        $('#green-' + descuentoId).on('click', function() {
+            enviarVoto(descuentoId, true);  // Voto positivo
+        });
+    
+        $('#red-' + descuentoId).on('click', function() {
+            enviarVoto(descuentoId, false);  // Voto negativo
         });
 
         obtener_guardado(descuentoId);
@@ -85,4 +144,5 @@ function on_page_load() {
 
 $(document).ready(function() {
     on_page_load();
+    
 });

@@ -42,15 +42,14 @@
                 <h3 class="card-header">{{ descuento.nombre }}</h3>
                 <div class="card-body">
                     <p class="card-text">{{ descuento.descripcion }}</p>    
-                    <a href="{% url 'detalle_descuento' descuento.id %}">Ver detalles</a> 
-                    
+                    <a href="{% url 'detalle_descuento' descuento.id %}">Ver detalles</a>
+                    {% if descuento.usuario_creador.id != user.id %}
                     <div>
-                        <button class="btn" id="green"><i class="green fa fa-thumbs-up fa-lg" aria-hidden="true"></i></button>
+                        <button class="btn" id="green-{{ descuento.id }}"><i class="green fa fa-thumbs-up fa-lg" aria-hidden="true"></i></button>
                         <span id="votos-positivos-{{ descuento.id }}"></span>
                     </div>
-
                     <div>
-                        <button class="btn" id="red"><i class="fa fa-thumbs-down fa-lg" aria-hidden="true"></i></button>
+                        <button class="btn" id="red-{{ descuento.id }}"><i class="fa fa-thumbs-down fa-lg" aria-hidden="true"></i></button>
                         <span id="votos-negativos-{{ descuento.id }}"></span>
                     </div>
 
@@ -58,6 +57,7 @@
                         <!--El atributo data-url es para conocer la url en JavaScript-->
                         <button id="guardar-{{ descuento.id }}" class="btn btn-danger" data-url="{% url 'guardar_descuento' %}">Guardar</button>
                     </div>
+                    {% endif %}
                 </div>
             </div>
         {% endfor %}
