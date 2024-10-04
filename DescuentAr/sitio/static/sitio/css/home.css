@@ -1,7 +1,7 @@
 body{
     margin: 40px;
 }
-  
+
 button{
 cursor: pointer;
 outline: 0;
@@ -19,4 +19,8 @@ color: green;
 
 .red{
 color: red;
+}
+
+.celeste {
+    background-color: #6A9AB0;
 }
