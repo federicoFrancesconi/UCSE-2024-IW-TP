@@ -9,6 +9,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.db.models import Count, Q
 from datetime import datetime
+from django.http import JsonResponse
 
 # Create your views here.
 def home(request):
@@ -78,6 +79,17 @@ def guardados(request):
     return render(request, 'guardados.html', {
         'lista_descuentos': descuentos,
         })
+
+@login_required
+def gestionar_suscripciones(request):
+    categorias = Categoria.objects.all()
+    categorias_suscritas = SuscripcionCategoria.objects.filter(usuario=request.user).values_list('categoria', flat=True)
+
+    return render(request, 'gestionar_suscripciones.html', {
+        'categorias': categorias,
+        'categorias_suscritas': categorias_suscritas,
+    })
+
 
 ##################################### apis ###############################
 
@@ -176,3 +188,24 @@ def guardar_descuento(request):
 
     except Descuento.DoesNotExist:
         return Response({"error": "Descuento no encontrado"}, status=status.HTTP_404_NOT_FOUND)
+    
+
+@api_view(['POST'])
+@login_required
+def suscribir_categoria(request):
+    categoria_id = request.POST.get('categoria_id')
+    categoria = get_object_or_404(Categoria, pk=categoria_id)
+
+    # Crear la suscripción
+    SuscripcionCategoria.objects.create(usuario=request.user, categoria=categoria)
+    return JsonResponse({'message': 'Suscripción exitosa'}, status=201)
+
+@api_view(['POST'])
+@login_required
+def desuscribir_categoria(request):
+    categoria_id = request.POST.get('categoria_id')
+    categoria = get_object_or_404(Categoria, pk=categoria_id)
+
+    # Eliminar la suscripción
+    SuscripcionCategoria.objects.filter(usuario=request.user, categoria=categoria).delete()
+    return JsonResponse({'message': 'Desuscripción exitosa'}, status=200)

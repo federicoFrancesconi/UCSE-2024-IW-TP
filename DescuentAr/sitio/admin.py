@@ -14,3 +14,8 @@ class DescuentoAdmin(admin.ModelAdmin):
 class VotoAdmin(admin.ModelAdmin):
     list_display = ("descuento", "usuario", "voto_positivo")
 
+
+@admin.register(SuscripcionCategoria)
+class SuscripcionCategoriaAdmin(admin.ModelAdmin):
+    list_display = ("usuario", "categoria")
+
