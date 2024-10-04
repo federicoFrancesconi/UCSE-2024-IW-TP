@@ -38,7 +38,7 @@
 
         {% for descuento in lista_descuentos %}
             <!--Usamos este atributo para saber el id de cada descuento en JavaScript-->
-            <div data-descuento-id="{{ descuento.id }}" class="card">
+            <div data-descuento-id="{{ descuento.id }}" class="card m-3">
                 <h3 class="card-header">{{ descuento.nombre }}</h3>
                 <div class="card-body">
                     <p class="card-text">{{ descuento.descripcion }}</p>    
