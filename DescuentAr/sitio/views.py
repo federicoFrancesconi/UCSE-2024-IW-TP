@@ -127,7 +127,10 @@ def guardar_voto(request):
             if voto_existente != voto_positivo:
                 voto_existente.voto_positivo = voto_positivo
                 voto_existente.save()
-                return Response({"message": "Voto actualizado correctamente"}, status=status.HTTP_200_OK)
+
+                validarEstadoDescuento(descuento, voto_existente)
+
+                return Response({"message": "Voto actualizado correctamente", "estado_descuento": descuento.state}, status=status.HTTP_200_OK)
             else:
                 print("ya has votado antes")
                 return Response({"error": "Ya has votado por este descuento"}, status=status.HTTP_400_BAD_REQUEST)
@@ -138,12 +141,26 @@ def guardar_voto(request):
                 descuento=descuento,
                 voto_positivo=voto_positivo
             )
-    
-            return Response({"message": "Voto registrado correctamente"}, status=status.HTTP_201_CREATED)
+
+            validarEstadoDescuento(descuento, nuevo_voto)
+
+            return Response({"message": "Voto registrado correctamente", "estado_descuento": descuento.state}, status=status.HTTP_201_CREATED)
 
     except Descuento.DoesNotExist:
         return Response({"error": "Descuento no encontrado"}, status=status.HTTP_404_NOT_FOUND)
     
+def validarEstadoDescuento(descuento, voto):
+    if voto.voto_positivo:
+        if descuento.state == 'revision':
+            if descuento.get_total_votos() >= 2 and descuento.get_ratio_votos() >= 2:
+                descuento.state = 'publicado'
+                descuento.save()
+    else:
+        if descuento.state == 'publicado':
+            if descuento.get_ratio_votos() <= 1.5:
+                descuento.state = 'suspendido'
+                descuento.save()
+
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])

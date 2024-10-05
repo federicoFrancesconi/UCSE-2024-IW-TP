@@ -73,9 +73,10 @@ function enviarVoto(descuentoId, votoPositivo) {
             'descuento_id': descuentoId,  // ID del descuento
             'voto_positivo': votoPositivo  // Voto positivo o negativo
         },
-        success: function (response) {       
+        success: function (response) {     
             actualizarEstadoBotones(descuentoId, votoPositivo);  // Actualiza el color de los botones
             obtener_votos(descuentoId);  // Actualiza el número de votos en pantalla
+            actualizarEstadoDescuento(descuentoId,response.estado_descuento);  // Actualiza el estado del descuento
         },
         error: function (response) {
             alert(response.responseJSON.error);  // Muestra el error si ocurre
@@ -113,6 +114,10 @@ function actualizarEstadoBotones(descuentoId, votoPositivo) {
     }
 }
 
+function actualizarEstadoDescuento(descuentoId, estado) {
+    $('#estado-' + descuentoId).text(estado);
+}
+
 function on_page_load() {
     const descuentos = document.querySelectorAll("[data-descuento-id]");
 
@@ -144,5 +149,4 @@ function on_page_load() {
 
 $(document).ready(function() {
     on_page_load();
-    
 });
