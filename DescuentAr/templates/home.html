@@ -7,26 +7,32 @@
 
 <body>
     {% block content %}
-    <!-- <h1>Bienvenidos!</h1> -->
     <form method="GET">
         <div class="form-row">
             <div class="row">
                 <div class="form-group col-md-3">
                     <label for="categoria">Categoría:</label>
-                    <select name="categoria_id" class="form-control">
+                    <select name="id_categoria" class="form-control">
                         <option value="">...</option>
+                        
+                        <!-- Cargamos las categorías en el select, y dejamos seleccionada por la que haya filtrado -->
                         {% for categoria in categorias %}
-                            <option value="{{ categoria.id }}">{{ categoria.nombre }}</option>
+                            {% if categoria.id|add:"0" == categoria_seleccionada|add:"0" %}
+                                <option value="{{ categoria.id }}" selected>{{ categoria.nombre }}</option>
+                            {% else %}
+                                <option value="{{ categoria.id }}">{{ categoria.nombre }}</option>
+                            {% endif %}
                         {% endfor %}
+
                     </select>
                 </div>
                 <div class="form-group col-md-3">
                     <label for="fecha_hasta">Fecha Hasta:</label>
-                    <input type="date" name="fecha_hasta" class="form-control">
+                    <input type="date" name="fecha_hasta" class="form-control" value="{{ fecha_hasta_seleccionada }}">
                 </div>
                 <div class="form-group col-md-3">
                     <label for ="cant_votos">Cantidad votos:</label>
-                    <input type="form_control" id="formControl" name = "cant_votos" class="form-control">
+                    <input type="number" id="formControl" name = "cant_votos" class="form-control" value="{{ cant_votos_seleccionada }}">
                 </div>
                 <div class="form-group col-md-4">
                     <button class="btn btn-primary" type="submit">Filtrar</button>
@@ -43,6 +49,9 @@
                 <div class="card-body">
                     <p class="card-text">{{ descuento.descripcion }}</p>    
                     <a href="{% url 'detalle_descuento' descuento.id %}">Ver detalles</a>
+                    <p class="estado_descuento" id="estado-{{ descuento.id }}">{{ descuento.state }}</p>
+
+                    <!-- Este if previene que un usuario interactue con sus propios descuentos -->
                     {% if descuento.usuario_creador.id != user.id %}
                     <div>
                         <button class="btn" id="green-{{ descuento.id }}"><i class="green fa fa-thumbs-up fa-lg" aria-hidden="true"></i></button>

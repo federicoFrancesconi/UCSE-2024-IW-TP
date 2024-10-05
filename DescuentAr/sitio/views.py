@@ -11,10 +11,9 @@ from django.db.models import Count, Q
 from datetime import datetime
 from django.http import JsonResponse
 
-# Create your views here.
 def home(request):
 
-    categoria_id = request.GET.get('categoria_id')
+    id_categoria = request.GET.get('id_categoria')
     fecha_hasta = request.GET.get('fecha_hasta')
     fecha = datetime.strptime(fecha_hasta, '%Y-%m-%d').date() if fecha_hasta else None
     cant_votos = request.GET.get('cant_votos')
@@ -27,10 +26,16 @@ def home(request):
         diferencia_votos=Count('voto', filter=Q(voto__voto_positivo=True)) - Count('voto', filter=Q(voto__voto_positivo=False))
     )
 
-    if categoria_id:
-        descuentos = descuentos.filter(categoria_id = categoria_id)
-    
+    # Si el usuario no está loggeado le mostramos solo los descuentos publicados
+    if not request.user.is_authenticated:
+        descuentos = descuentos.filter(state='publicado')
+    # Si el usuario está loggeado le mostramos los descuentos publicados y en revision
+    else:
+        descuentos = descuentos.filter(Q(state='publicado') | Q(state='revision'))
 
+    if id_categoria:
+        descuentos = descuentos.filter(categoria_id = id_categoria)
+    
     #si trae el filtro lo hace, sino busca los vigentes 
     descuentos = descuentos.filter(fecha_hasta__lt=fecha) if fecha is not None else descuentos.filter(fecha_hasta__gte=datetime.today().date())
 
@@ -40,7 +45,8 @@ def home(request):
     return render(request, 'home.html', {
         'lista_descuentos': descuentos,
         'categorias': categorias,
-        'categoria_seleccionada': categoria_id,
+        'categoria_seleccionada': id_categoria,
+        'fecha_hasta_seleccionada': fecha_hasta,
         'cant_votos_seleccionada': cant_votos,
     })
 
@@ -124,7 +130,10 @@ def guardar_voto(request):
             if voto_existente != voto_positivo:
                 voto_existente.voto_positivo = voto_positivo
                 voto_existente.save()
-                return Response({"message": "Voto actualizado correctamente"}, status=status.HTTP_200_OK)
+
+                validarEstadoDescuento(descuento, voto_existente)
+
+                return Response({"message": "Voto actualizado correctamente", "estado_descuento": descuento.state}, status=status.HTTP_200_OK)
             else:
                 print("ya has votado antes")
                 return Response({"error": "Ya has votado por este descuento"}, status=status.HTTP_400_BAD_REQUEST)
@@ -135,12 +144,26 @@ def guardar_voto(request):
                 descuento=descuento,
                 voto_positivo=voto_positivo
             )
-    
-            return Response({"message": "Voto registrado correctamente"}, status=status.HTTP_201_CREATED)
+
+            validarEstadoDescuento(descuento, nuevo_voto)
+
+            return Response({"message": "Voto registrado correctamente", "estado_descuento": descuento.state}, status=status.HTTP_201_CREATED)
 
     except Descuento.DoesNotExist:
         return Response({"error": "Descuento no encontrado"}, status=status.HTTP_404_NOT_FOUND)
     
+def validarEstadoDescuento(descuento, voto):
+    if voto.voto_positivo:
+        if descuento.state == 'revision':
+            if descuento.get_total_votos() >= 2 and descuento.get_ratio_votos() >= 2:
+                descuento.state = 'publicado'
+                descuento.save()
+    else:
+        if descuento.state == 'publicado':
+            if descuento.get_ratio_votos() <= 1.5:
+                descuento.state = 'suspendido'
+                descuento.save()
+
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
