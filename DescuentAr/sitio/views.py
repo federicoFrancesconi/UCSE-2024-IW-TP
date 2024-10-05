@@ -11,10 +11,9 @@ from django.db.models import Count, Q
 from datetime import datetime
 from django.http import JsonResponse
 
-# Create your views here.
 def home(request):
 
-    categoria_id = request.GET.get('categoria_id')
+    id_categoria = request.GET.get('id_categoria')
     fecha_hasta = request.GET.get('fecha_hasta')
     fecha = datetime.strptime(fecha_hasta, '%Y-%m-%d').date() if fecha_hasta else None
     cant_votos = request.GET.get('cant_votos')
@@ -27,8 +26,8 @@ def home(request):
         diferencia_votos=Count('voto', filter=Q(voto__voto_positivo=True)) - Count('voto', filter=Q(voto__voto_positivo=False))
     )
 
-    if categoria_id:
-        descuentos = descuentos.filter(categoria_id = categoria_id)
+    if id_categoria:
+        descuentos = descuentos.filter(categoria_id = id_categoria)
     
 
     #si trae el filtro lo hace, sino busca los vigentes 
@@ -40,7 +39,8 @@ def home(request):
     return render(request, 'home.html', {
         'lista_descuentos': descuentos,
         'categorias': categorias,
-        'categoria_seleccionada': categoria_id,
+        'categoria_seleccionada': id_categoria,
+        'fecha_hasta_seleccionada': fecha_hasta,
         'cant_votos_seleccionada': cant_votos,
     })
 
