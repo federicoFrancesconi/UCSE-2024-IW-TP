@@ -26,10 +26,13 @@ def home(request):
         diferencia_votos=Count('voto', filter=Q(voto__voto_positivo=True)) - Count('voto', filter=Q(voto__voto_positivo=False))
     )
 
+    # Si el usuario no está loggeado le mostramos solo los descuentos publicados
+    if not request.user.is_authenticated:
+        descuentos = descuentos.filter(state='publicado')
+
     if id_categoria:
         descuentos = descuentos.filter(categoria_id = id_categoria)
     
-
     #si trae el filtro lo hace, sino busca los vigentes 
     descuentos = descuentos.filter(fecha_hasta__lt=fecha) if fecha is not None else descuentos.filter(fecha_hasta__gte=datetime.today().date())
 

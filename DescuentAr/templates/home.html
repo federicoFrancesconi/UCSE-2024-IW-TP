@@ -49,6 +49,9 @@
                 <div class="card-body">
                     <p class="card-text">{{ descuento.descripcion }}</p>    
                     <a href="{% url 'detalle_descuento' descuento.id %}">Ver detalles</a>
+                    <p class="estado_descuento">{{ descuento.state }}</p>
+
+                    <!-- Este if previene que un usuario interactue con sus propios descuentos -->
                     {% if descuento.usuario_creador.id != user.id %}
                     <div>
                         <button class="btn" id="green-{{ descuento.id }}"><i class="green fa fa-thumbs-up fa-lg" aria-hidden="true"></i></button>
