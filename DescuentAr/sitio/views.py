@@ -29,6 +29,9 @@ def home(request):
     # Si el usuario no está loggeado le mostramos solo los descuentos publicados
     if not request.user.is_authenticated:
         descuentos = descuentos.filter(state='publicado')
+    # Si el usuario está loggeado le mostramos los descuentos publicados y en revision
+    else:
+        descuentos = descuentos.filter(Q(state='publicado') | Q(state='revision'))
 
     if id_categoria:
         descuentos = descuentos.filter(categoria_id = id_categoria)
