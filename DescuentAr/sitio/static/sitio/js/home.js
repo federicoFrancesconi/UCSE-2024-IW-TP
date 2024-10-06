@@ -6,12 +6,31 @@ function obtener_votos(descuentoId) {
         success: function(data) {
             $('#votos-positivos-' + descuentoId).text(data.votos_positivos);
             $('#votos-negativos-' + descuentoId).text(data.votos_negativos);
+            
+            // Actualiza el estado del botón según si el usuario ya votó
+            if (data.ya_votado) {
+                if (data.voto_positivo) {
+                    // Usuario ha votado positivamente
+                    $('#green-' + descuentoId).addClass('btn-success').removeClass('btn-default');
+                    $('#red-' + descuentoId).addClass('btn-default').removeClass('btn-danger');
+                } else {
+                    // Usuario ha votado negativamente
+                    $('#red-' + descuentoId).addClass('btn-danger').removeClass('btn-default');
+                    $('#green-' + descuentoId).addClass('btn-default').removeClass('btn-success');
+                }
+            } else {
+                // Usuario no ha votado, aseguramos que los botones están en su estado predeterminado
+                $('#green-' + descuentoId).addClass('btn-default').removeClass('btn-success');
+                $('#red-' + descuentoId).addClass('btn-default').removeClass('btn-danger');
+            }
         },
         error: function(error) {
             console.error("Error al obtener los votos:", error);
         }
     });
 }
+
+// Resto del código permanece igual
 
 function obtener_guardado(descuentoId) {
     $.ajax({
@@ -73,12 +92,12 @@ function enviarVoto(descuentoId, votoPositivo) {
             'descuento_id': descuentoId,  // ID del descuento
             'voto_positivo': votoPositivo  // Voto positivo o negativo
         },
-        success: function (response) {     
+        success: function(response) {     
             actualizarEstadoBotones(descuentoId, votoPositivo);  // Actualiza el color de los botones
             obtener_votos(descuentoId);  // Actualiza el número de votos en pantalla
-            actualizarEstadoDescuento(descuentoId,response.estado_descuento);  // Actualiza el estado del descuento
+            actualizarEstadoDescuento(descuentoId, response.estado_descuento);  // Actualiza el estado del descuento
         },
-        error: function (response) {
+        error: function(response) {
             window.location.href = '/accounts/login/';
         }
     });

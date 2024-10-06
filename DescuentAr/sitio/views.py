@@ -7,7 +7,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
-from django.db.models import Count, Q
+from django.db.models import Count, Q, BooleanField, ExpressionWrapper
 from datetime import datetime
 from django.http import JsonResponse
 
@@ -43,7 +43,7 @@ def home(request):
         descuentos = descuentos.filter(diferencia_votos__gte=int(cant_votos))
 
     descuentos = descuentos.order_by('-id')
-    
+
     return render(request, 'home.html', {
         'lista_descuentos': descuentos,
         'categorias': categorias,
@@ -108,9 +108,22 @@ def obtener_votos(request, descuento_id):
         votos_positivos = Voto.objects.filter(descuento=descuento, voto_positivo=True).count()
         votos_negativos = Voto.objects.filter(descuento=descuento, voto_positivo=False).count()
         
+        # Inicializa variables para el estado del voto
+        ya_votado = False
+        voto_positivo = None
+        
+        if request.user.is_authenticated:
+            # Comprueba si el usuario ha votado en este descuento
+            voto = Voto.objects.filter(descuento=descuento, usuario=request.user).first()
+            if voto:
+                ya_votado = True
+                voto_positivo = voto.voto_positivo
+        
         data = {
             'votos_positivos': votos_positivos,
             'votos_negativos': votos_negativos,
+            'ya_votado': ya_votado,
+            'voto_positivo': voto_positivo,
         }    
         return Response(data)
     
