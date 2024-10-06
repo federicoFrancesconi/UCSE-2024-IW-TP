@@ -51,7 +51,7 @@ function guardar_descuento(descuentoId) {
             }
         },
         error: function(error) {
-            console.error("Error al guardar/quitar el descuento:", error);
+            window.location.href = '/accounts/login/';
         }
     });
 }
@@ -79,7 +79,7 @@ function enviarVoto(descuentoId, votoPositivo) {
             actualizarEstadoDescuento(descuentoId,response.estado_descuento);  // Actualiza el estado del descuento
         },
         error: function (response) {
-            alert(response.responseJSON.error);  // Muestra el error si ocurre
+            window.location.href = '/accounts/login/';
         }
     });
 }
