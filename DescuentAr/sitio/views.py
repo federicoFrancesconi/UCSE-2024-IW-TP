@@ -42,6 +42,8 @@ def home(request):
     if cant_votos:
         descuentos = descuentos.filter(diferencia_votos__gte=int(cant_votos))
 
+    descuentos = descuentos.order_by('-id')
+    
     return render(request, 'home.html', {
         'lista_descuentos': descuentos,
         'categorias': categorias,
