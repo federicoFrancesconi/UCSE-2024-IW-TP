@@ -26,6 +26,17 @@ def home(request):
         diferencia_votos=Count('voto', filter=Q(voto__voto_positivo=True)) - Count('voto', filter=Q(voto__voto_positivo=False))
     )
 
+
+    #buscador
+    busqueda = request.GET.get("buscar")
+
+    if busqueda:
+        descuentos = Descuento.objects.filter(
+            Q(nombre__icontains = busqueda)   
+        ).distinct()
+
+
+
     # Si el usuario no está loggeado le mostramos solo los descuentos publicados
     if not request.user.is_authenticated:
         descuentos = descuentos.filter(state='publicado')
