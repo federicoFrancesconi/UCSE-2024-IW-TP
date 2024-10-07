@@ -65,10 +65,47 @@ def crear_descuento(request):
             descuento.usuario_creador = request.user
             descuento.state = 'revision'
             descuento.save()
+
+            notificar_suscriptores(request, descuento.id, descuento.categoria)
+
             return redirect('home')
     else:
         form = DescuentoForm()
     return render(request, 'crear_descuento.html', {'form': form})
+
+from django.core import mail
+from django.template.loader import render_to_string
+from django.contrib.sites.shortcuts import get_current_site
+
+def notificar_suscriptores(request, descuentoId, categoria):
+    connection = mail.get_connection()
+    current_site = get_current_site(request)
+    suscripciones_a_categoria = SuscripcionCategoria.objects.filter(categoria=categoria)
+
+    suscriptores = [sc.usuario for sc in suscripciones_a_categoria]
+
+    mails = []
+    for suscriptor in suscriptores:
+        email_recipiente = suscriptor.email
+        
+        # Armamos el mensaje de correo
+        subject = "Nuevo Descuento!"
+        mensaje = render_to_string('notificacion_nuevo_descuento.html', {
+            'request': request,
+            'user': suscriptor,
+            'domain': current_site.domain,
+            'id_descuento': descuentoId,
+            'categoria':categoria
+        })
+
+        email = mail.EmailMessage(
+            subject, mensaje, to=[email_recipiente]
+        )
+        email.content_subtype = 'html'
+
+        mails.append(email)
+
+    connection.send_messages(mails)
 
 @login_required
 def mis_publicaciones(request):

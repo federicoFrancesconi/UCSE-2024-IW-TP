@@ -1,0 +1,13 @@
+<div style="background-color: #c2c2c2; padding: 15px;">
+    <h2 style="margin: 0; padding: 10px; border-top-left-radius: 10px; border-top-right-radius: 10px; background-color: #5865F2; color: #ffffff;">Hay un nuevo descuento para la categoría {{ categoria }}!</h2>
+    <div style="margin: 0; padding: 15px; background-color: #ffffff;">
+        <p>Hola {{ user.username }},</p>
+        <p>Chequeá el nuevo descuento y aprovechalo antes que nadie.</p>
+        <a href="{{ request.scheme }}://{{ domain }}{% url 'detalle_descuento' descuento_id=id_descuento %}" style="border: 0; color: #ffffff; background-color: #5865F2; padding: 15px; font-weight: bold; text-decoration: none; border-radius: 5px;">
+            Ver descuento
+        </a>
+        <p style="margin-top: 40px;">O bien copiate este link en la barra de búsqueda del navegador</p>
+        <p>{{ request.scheme }}://{{ domain }}{% url 'detalle_descuento' descuento_id=id_descuento %}</p>
+        <p>El equipo de DescuentAr</p>
+    </div>
+</div>
