@@ -15,4 +15,5 @@ urlpatterns = [
     path('suscripciones/', gestionar_suscripciones, name='gestionar_suscripciones'),
     path('api/suscribir_categoria/', suscribir_categoria, name='suscribir_categoria'),
     path('api/desuscribir_categoria/', desuscribir_categoria, name='desuscribir_categoria'),
+    path('api/retirar_voto/',retirar_voto, name='retirar_voto'),
 ]

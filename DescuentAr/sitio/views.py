@@ -166,7 +166,29 @@ def guardar_voto(request):
 
     except Descuento.DoesNotExist:
         return Response({"error": "Descuento no encontrado"}, status=status.HTTP_404_NOT_FOUND)
-    
+
+@api_view(['POST'])
+def retirar_voto(request):
+    try:
+        descuento_id = request.data.get('descuento_id')
+        usuario = request.user
+
+        # Verifica que el usuario esté autenticado
+        if not usuario.is_authenticated:
+            return Response({'error': 'Usuario no autenticado'}, status=status.HTTP_401_UNAUTHORIZED)
+
+        # Obtiene el voto del usuario
+        voto = Voto.objects.get(descuento_id=descuento_id, usuario=usuario)
+        voto.delete()  # Elimina el voto
+
+        return Response({'message': 'Voto retirado correctamente'}, status=status.HTTP_204_NO_CONTENT)
+
+    except Voto.DoesNotExist:
+        return Response({'error': 'Voto no encontrado'}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
 def validarEstadoDescuento(descuento, voto):
     if voto.voto_positivo:
         if descuento.state == 'revision':

@@ -9,6 +9,8 @@ function obtener_votos(descuentoId) {
             
             // Actualiza el estado del botón según si el usuario ya votó
             if (data.ya_votado) {
+                $('#retirar-voto-' + descuentoId).show(); // si tiene voto muestro para que pueda eliminarlo
+
                 if (data.voto_positivo) {
                     // Usuario ha votado positivamente
                     $('#green-' + descuentoId).addClass('btn-success').removeClass('btn-default');
@@ -19,7 +21,7 @@ function obtener_votos(descuentoId) {
                     $('#green-' + descuentoId).addClass('btn-default').removeClass('btn-success');
                 }
             } else {
-                // Usuario no ha votado, aseguramos que los botones están en su estado predeterminado
+                $('#retirar-voto-' + descuentoId).hide(); //si no voto oculto el botón
                 $('#green-' + descuentoId).addClass('btn-default').removeClass('btn-success');
                 $('#red-' + descuentoId).addClass('btn-default').removeClass('btn-danger');
             }
@@ -30,7 +32,28 @@ function obtener_votos(descuentoId) {
     });
 }
 
-// Resto del código permanece igual
+function retirar_voto(descuentoId) {
+    const csrfToken = $('meta[name="csrf-token"]').attr('content');
+
+    $.ajax({
+        url: 'api/retirar_voto/',  // Asegúrate de que este URL coincida con tu endpoint
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': csrfToken 
+        },
+        data: {
+            'descuento_id': descuentoId
+        },
+        success: function(response) {
+            window.location.href = ''
+            actualizarEstadoBotones(descuentoId, null);
+        },
+        error: function(response) {
+            console.error("Error al retirar el voto:", response);
+            window.location.href = '/accounts/login/';
+        }
+    });
+}
 
 function obtener_guardado(descuentoId) {
     $.ajax({
@@ -153,6 +176,10 @@ function on_page_load() {
     
         $('#red-' + descuentoId).on('click', function() {
             enviarVoto(descuentoId, false);  // Voto negativo
+        });
+
+        $('#retirar-voto-' + descuentoId).on('click', function() {
+            retirar_voto(descuentoId);
         });
 
         obtener_guardado(descuentoId);

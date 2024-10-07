@@ -61,7 +61,7 @@
                         <button class="btn" id="red-{{ descuento.id }}"><i class="fa fa-thumbs-down fa-lg" aria-hidden="true"></i></button>
                         <span id="votos-negativos-{{ descuento.id }}"></span>
                     </div>
-
+                    <button id="retirar-voto-{{ descuento.id }}" class="btn btn-warning" style="display: none;">Retirar Voto</button>
                     <div>
                         <!--El atributo data-url es para conocer la url en JavaScript-->
                         <button id="guardar-{{ descuento.id }}" class="btn btn-danger" data-url="{% url 'guardar_descuento' %}">Guardar</button>
