@@ -34,6 +34,24 @@
                     <label for ="cant_votos">Cantidad votos:</label>
                     <input type="number" id="formControl" name = "cant_votos" class="form-control" value="{{ cant_votos_seleccionada }}">
                 </div>
+                <!-- No tiene sentido que el usuario filtre por estado si no esta autenticado (solo le aparecen los descuentos publicados)-->
+                {% if user.is_authenticated %}
+                <div class="form-group col-md-3">
+                    <label for="estado">Estado:</label>
+                    <select name="estado_descuento" class="form-control">
+                        <option value="">...</option>
+                        
+                        {% for estado in estados %}
+                            {% if estado == estado_seleccionado %}
+                                <option value="{{ estado }}" selected>{{ estado }}</option>
+                            {% else %}
+                                <option value="{{ estado }}">{{ estado }}</option>
+                            {% endif %}
+                        {% endfor %}
+
+                    </select>
+                </div>
+                {% endif %}
                 <div class="form-group col-md-4">
                     <button class="btn btn-primary" type="submit">Filtrar</button>
                 </div>

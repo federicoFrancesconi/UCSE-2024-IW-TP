@@ -17,6 +17,7 @@ def home(request):
     fecha_hasta = request.GET.get('fecha_hasta')
     fecha = datetime.strptime(fecha_hasta, '%Y-%m-%d').date() if fecha_hasta else None
     cant_votos = request.GET.get('cant_votos')
+    estado_descuento = request.GET.get('estado_descuento')
 
     categorias = Categoria.objects.all()
 
@@ -26,8 +27,7 @@ def home(request):
         diferencia_votos=Count('voto', filter=Q(voto__voto_positivo=True)) - Count('voto', filter=Q(voto__voto_positivo=False))
     )
 
-
-    #buscador
+    # Implementamos el buscador
     busqueda = request.GET.get("buscar")
 
     if busqueda:
@@ -35,14 +35,14 @@ def home(request):
             Q(nombre__icontains = busqueda)   
         ).distinct()
 
-
-
     # Si el usuario no está loggeado le mostramos solo los descuentos publicados
     if not request.user.is_authenticated:
         descuentos = descuentos.filter(state='publicado')
     # Si el usuario está loggeado le mostramos los descuentos publicados y en revision
     else:
         descuentos = descuentos.filter(Q(state='publicado') | Q(state='revision'))
+        if estado_descuento:
+            descuentos = descuentos.filter(state=estado_descuento)
 
     if id_categoria:
         descuentos = descuentos.filter(categoria_id = id_categoria)
@@ -61,6 +61,8 @@ def home(request):
         'categoria_seleccionada': id_categoria,
         'fecha_hasta_seleccionada': fecha_hasta,
         'cant_votos_seleccionada': cant_votos,
+        'estado_seleccionado': estado_descuento,
+        'estados': ['publicado', 'revision'],
     })
 
 def detalle_descuento(request, descuento_id):
