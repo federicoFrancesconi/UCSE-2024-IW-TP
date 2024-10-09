@@ -21,6 +21,8 @@
                 {{ form.password }}
               </div>
               <input type="submit" value="ingresar">
+              <!-- Este input permite el redireccionamiento a la página a la cual quería dirigirse el usuario -->
+              <input type="hidden" name="next" value="{{ next }}">
             </form>
 
             <div class="text-center mt-3">

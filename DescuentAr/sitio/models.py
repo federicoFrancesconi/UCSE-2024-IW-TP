@@ -4,8 +4,6 @@ from django.db.models.fields import DateTimeField
 import datetime, time
 from django.conf import settings
 
-# Create your models here.
-
 STATES_DESCUENTO = [
     ('publicado', 'PUBLICADO'),
     ('revision', 'REVISION'),
@@ -30,6 +28,22 @@ class Descuento(models.Model):
     def __str__(self):
         return self.nombre
     
+    def get_total_votos(self):
+        return self.voto_set.count()
+    
+    def get_ratio_votos(self):
+        total_votos = self.get_total_votos()
+        positivos = self.voto_set.filter(voto_positivo=True).count()
+        negativos = total_votos - positivos
+        
+        if total_votos == 0:
+            return 0
+
+        if negativos == 0:
+            # Si no hay negativos, el ratio es infinito
+            return float('inf')
+        else:
+            return positivos / negativos
 
 class Voto(models.Model):
     usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
@@ -38,3 +52,17 @@ class Voto(models.Model):
 
     def __str__(self):
         return f"{self.usuario} - {self.descuento} - {'Positivo' if self.voto_positivo else 'Negativo'}"
+    
+class DescuentoGuardado(models.Model):
+    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    descuento = models.ForeignKey(Descuento, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.usuario} - {self.descuento}"
+
+class SuscripcionCategoria(models.Model):
+    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE, blank = True, null= True)
+
+    def __str__(self):
+        return f"{self.usuario} - {self.categoria}"

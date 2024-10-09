@@ -1,103 +1,95 @@
 {% extends "base.html" %}
+{% load static %}
+
+<head>
+    <link rel="stylesheet" href="{% static 'sitio/css/home.css' %}">
+</head>
 
 <body>
     {% block content %}
-    <!-- <h1>Bienvenidos!</h1> -->
     <form method="GET">
         <div class="form-row">
             <div class="row">
                 <div class="form-group col-md-3">
                     <label for="categoria">Categoría:</label>
-                    <select name="categoria_id" class="form-control">
+                    <select name="id_categoria" class="form-control">
                         <option value="">...</option>
+                        
+                        <!-- Cargamos las categorías en el select, y dejamos seleccionada por la que haya filtrado -->
                         {% for categoria in categorias %}
-                            <option value="{{ categoria.id }}">{{ categoria.nombre }}</option>
+                            {% if categoria.id|add:"0" == categoria_seleccionada|add:"0" %}
+                                <option value="{{ categoria.id }}" selected>{{ categoria.nombre }}</option>
+                            {% else %}
+                                <option value="{{ categoria.id }}">{{ categoria.nombre }}</option>
+                            {% endif %}
                         {% endfor %}
+
                     </select>
                 </div>
                 <div class="form-group col-md-3">
                     <label for="fecha_hasta">Fecha Hasta:</label>
-                    <input type="date" name="fecha_hasta" class="form-control">
+                    <input type="date" name="fecha_hasta" class="form-control" value="{{ fecha_hasta_seleccionada }}">
                 </div>
                 <div class="form-group col-md-3">
                     <label for ="cant_votos">Cantidad votos:</label>
-                    <input type="form_control" id="formControl" name = "cant_votos" class="form-control">
+                    <input type="number" id="formControl" name = "cant_votos" class="form-control" value="{{ cant_votos_seleccionada }}">
                 </div>
+                <!-- No tiene sentido que el usuario filtre por estado si no esta autenticado (solo le aparecen los descuentos publicados)-->
+                {% if user.is_authenticated %}
+                <div class="form-group col-md-3">
+                    <label for="estado">Estado:</label>
+                    <select name="estado_descuento" class="form-control">
+                        <option value="">...</option>
+                        
+                        {% for estado in estados %}
+                            {% if estado == estado_seleccionado %}
+                                <option value="{{ estado }}" selected>{{ estado }}</option>
+                            {% else %}
+                                <option value="{{ estado }}">{{ estado }}</option>
+                            {% endif %}
+                        {% endfor %}
+
+                    </select>
+                </div>
+                {% endif %}
                 <div class="form-group col-md-4">
                     <button class="btn btn-primary" type="submit">Filtrar</button>
                 </div>
             </div>
         </div>
     </form>
+    <meta name="csrf-token" content="{{ csrf_token }}">
 
-    {% for descuento in lista_descuentos %}
-        <div class="card">
-            <h3 class="card-header">{{ descuento.nombre }}</h3>
-            <div class="card-body">
-            <p class="card-text">{{ descuento.descripcion }}</p>    
-            <a href="{% url 'detalle_descuento' descuento.id %}">Ver detalles</a> 
-            
-            <div>
-                <button class="btn" id="green"><i class="green fa fa-thumbs-up fa-lg" aria-hidden="true"></i></button>
-                 <span id="votos-positivos-{{ descuento.id }}"></span>
+        {% for descuento in lista_descuentos %}
+            <!--Usamos este atributo para saber el id de cada descuento en JavaScript-->
+            <div data-descuento-id="{{ descuento.id }}" class="card m-3">
+                <h3 class="card-header">{{ descuento.nombre }}</h3>
+                <div class="card-body">
+                    <p class="card-text">{{ descuento.descripcion }}</p>    
+                    <a href="{% url 'detalle_descuento' descuento.id %}">Ver detalles</a>
+                    <p class="estado_descuento" id="estado-{{ descuento.id }}">{{ descuento.state }}</p>
+
+                    <!-- Este if previene que un usuario interactue con sus propios descuentos -->
+                    {% if descuento.usuario_creador.id != user.id %}
+                    <div>
+                        <button class="btn" id="green-{{ descuento.id }}"><i class="green fa fa-thumbs-up fa-lg" aria-hidden="true"></i></button>
+                        <span id="votos-positivos-{{ descuento.id }}"></span>
+                    </div>
+                    <div>
+                        <button class="btn" id="red-{{ descuento.id }}"><i class="fa fa-thumbs-down fa-lg" aria-hidden="true"></i></button>
+                        <span id="votos-negativos-{{ descuento.id }}"></span>
+                    </div>
+                    <button id="retirar-voto-{{ descuento.id }}" class="btn btn-warning" style="display: none;">Retirar Voto</button>
+                    <div>
+                        <!--El atributo data-url es para conocer la url en JavaScript-->
+                        <button id="guardar-{{ descuento.id }}" class="btn btn-danger" data-url="{% url 'guardar_descuento' %}">Guardar</button>
+                    </div>
+                    {% endif %}
+                </div>
             </div>
-            <div>
-                <button class="btn" id="red"><i class="fa fa-thumbs-down fa-lg" aria-hidden="true"></i></button>
-                <span id="votos-negativos-{{ descuento.id }}"></span>
-            </div>
+        {% endfor %}
 
-
-            </div>
-        </div>
-
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-        <script>
-            $(document).ready(function()   
-     {
-                var descuentoId = {{ descuento.id }};
-                var url = "api/obtener_votos/" + descuentoId + "/";
-    
-                $.ajax({
-                    url: url,
-                    type: "GET",
-                    dataType: "json",
-                    success: function(data) {
-                        $('#votos-positivos-' + descuentoId).text(data.votos_positivos);
-                        $('#votos-negativos-' + descuentoId).text(data.votos_negativos);
-                    },
-                    error: function(error) {
-                        console.error("Error al obtener los votos:", error);
-                    }
-                });
-            });
-        </script>
-    
-    {% endfor %}
+        
+        <script src="{% static 'sitio/js/home.js' %}"></script>
     {% endblock %}
 </body>
-
-
-<style>
-    body{
-  margin: 40px;
-}
-
-button{
-  cursor: pointer;
-  outline: 0;
-  color: #AAA;
-
-}
-
-.btn:focus {
-  outline: none;
-}
-
-.green{
-  color: green;
-}
-
-.red{
-  color: red;
-}
-</style>

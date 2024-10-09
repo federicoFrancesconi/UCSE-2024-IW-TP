@@ -7,13 +7,21 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView
 from django.contrib.auth.views import LoginView
 
-from django.contrib.auth import authenticate, login, logout
-from django.shortcuts import redirect
+from django.contrib.auth import authenticate, login, logout, get_user_model
+from django.shortcuts import redirect, render
 from django.contrib import messages
 
 class CustomLoginView(LoginView):
     authentication_form = CustomAuthenticationForm
     template_name = 'registration/login.html'
+
+    # Esta función la usamos para poder devolver la redirección a la cual quería dirigirse el usuario
+    # Pensemos que al principio hacemos un GET con la variable next,
+    # y después hacemos un POST, pero ya no está next en la URL
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['next'] = self.request.GET.get('next', '')
+        return context
 
     def form_valid(self, form):
         # Extrae el usuario y contraseña del formulario
@@ -23,11 +31,19 @@ class CustomLoginView(LoginView):
         # Autenticamos el usuario para conocer el campo email_is_verified
         user = authenticate(request=self.request, username=username, password=password)
 
+        # Traemos la página a la cual quería dirigirse el usuario (escondido en el form)
+        next_url = self.request.POST.get('next')
+
+        # Si no puede traerse next ni la redirect_url, nos lleva a 'home'
+        redirect_url = next_url or self.get_redirect_url() or 'home'
+
         if user is not None:
+            # Loggeamos manualmente el usuario para que podamos acceder a sus datos de necesitar verificar el mail
+            login(self.request, user)
+
             if user.email_is_verified:
-                # Solo permitimos loggear el usuario si su correo fue verificado
-                login(self.request, user)
-                return redirect('home')
+                # Me traigo la URL a la que queria acceder el usuario, y sino me redirecciona a home
+                return redirect(redirect_url)
             else:
                 # Si el email no fue verificado, redireccionamos a la vista de verificación
                 messages.error(self.request, 'Debe verificar el email antes de iniciar sesión.')
@@ -35,8 +51,6 @@ class CustomLoginView(LoginView):
         else:
             # Si la autenticación falla, dejamos que lo maneje el LoginView
             return self.form_invalid(form)
-
-from django.contrib.auth import login
 
 class SignUpView(CreateView):
     form_class = CustomUserCreationForm
@@ -50,15 +64,12 @@ class SignUpView(CreateView):
         # Hacemos un redirect a la url de verificación del email
         return redirect(self.success_url)
 
-from django.contrib.auth import get_user_model
-from django.shortcuts import redirect, render
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.template.loader import render_to_string
 from .tokens import account_activation_token
 from django.core.mail import EmailMessage
-from django.contrib import messages
 
 User = get_user_model()
 
