@@ -320,3 +320,17 @@ def desuscribir_categoria(request):
     # Eliminar la suscripción
     SuscripcionCategoria.objects.filter(usuario=request.user, categoria=categoria).delete()
     return JsonResponse({'message': 'Desuscripción exitosa'}, status=200)
+
+# ----------------------------------------------------
+# View proporcionada por la cátedra para poder reconstruir el índice de whoosh de la búsqueda interna
+
+def rebuild_index(request):
+    from django.core.management import call_command
+    from django.http import JsonResponse
+    try:
+        call_command("rebuild_index", noinput=False)
+        result = "Index rebuilt"
+    except Exception as err:
+        result = f"Error: {err}"
+
+    return JsonResponse({"result": result})
