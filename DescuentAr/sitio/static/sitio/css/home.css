@@ -20,3 +20,11 @@ color: green;
 .red{
 color: red;
 }
+
+.publicado{
+    background-color: green;
+}
+
+.revision{
+    background-color: red;
+}

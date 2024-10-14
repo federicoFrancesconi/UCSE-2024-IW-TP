@@ -196,3 +196,16 @@ function on_page_load() {
 $(document).ready(function() {
     on_page_load();
 });
+
+const tarjetas = document.querySelectorAll('.card');
+
+function asignarColor(tarjeta) {
+  const estado = tarjeta.querySelector('.estado_descuento').textContent;
+  const colores = {
+    'publicado': 'bg-success',
+    'revision': 'bg-danger'
+  };
+  tarjeta.classList.add(colores[estado]);
+}
+
+tarjetas.forEach(asignarColor);
