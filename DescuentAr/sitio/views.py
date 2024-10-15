@@ -10,6 +10,7 @@ from rest_framework import status
 from django.db.models import Count, Q, BooleanField, ExpressionWrapper
 from datetime import datetime
 from django.http import JsonResponse
+from haystack.query import SearchQuerySet
 
 def home(request):
 
@@ -26,14 +27,6 @@ def home(request):
         votos_negativos=Count('voto', filter=Q(voto__voto_positivo=False)),
         diferencia_votos=Count('voto', filter=Q(voto__voto_positivo=True)) - Count('voto', filter=Q(voto__voto_positivo=False))
     )
-
-    # Implementamos el buscador
-    busqueda = request.GET.get("buscar")
-
-    if busqueda:
-        descuentos = Descuento.objects.filter(
-            Q(nombre__icontains = busqueda)   
-        ).distinct()
 
     # Si el usuario no está loggeado le mostramos solo los descuentos publicados
     if not request.user.is_authenticated:
@@ -334,3 +327,14 @@ def rebuild_index(request):
         result = f"Error: {err}"
 
     return JsonResponse({"result": result})
+
+
+def search_descuento(request):
+    query = request.GET.get('buscar')
+
+    if query:
+        results = SearchQuerySet().filter(nombre__icontains = query)
+    else:
+        results = []
+
+    return render(request, 'search/search.html', {'resultados': results})

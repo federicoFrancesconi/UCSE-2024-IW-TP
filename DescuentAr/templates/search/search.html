@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% load static %}
+
+<head>
+    <link rel="stylesheet" href="{% static 'sitio/css/home.css' %}">
+</head>
+
+<body>
+    {% block content %}
+        <div>
+            <h2>Resultados encontrados: {{ resultados|length }}</h2 >
+            <ul>
+            {% if resultados %}
+                {% for result in resultados %}
+                    <li>
+                        <a href="{% url 'detalle_descuento' result.object.id %}"><h3>{{ result.object.nombre }}</h3></a>
+                    </li>
+                {% endfor %}
+            {% else %}
+                <p>No results found.</p>
+            {% endif %}
+            </ul>
+        </div>
+    {% endblock %}
+</body>
