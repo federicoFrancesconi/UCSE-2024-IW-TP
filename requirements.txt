@@ -8,3 +8,5 @@ whitenoise[brotli]==6.7.0
 gunicorn==23.0.0
 djangorestframework==3.15.2
 six
+django-haystack==3.3.0
+Whoosh==2.7.4
