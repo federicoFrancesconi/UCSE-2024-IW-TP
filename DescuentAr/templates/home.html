@@ -84,6 +84,8 @@
                         <!--El atributo data-url es para conocer la url en JavaScript-->
                         <button id="guardar-{{ descuento.id }}" class="btn btn-danger" data-url="{% url 'guardar_descuento' %}">Guardar</button>
                     </div>
+                    {% else %}
+                        <button id="eliminar-{{ descuento.id }}" type="button" class="btn btn-primary">eliminar</button>
                     {% endif %}
                 </div>
             </div>

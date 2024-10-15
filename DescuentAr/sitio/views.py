@@ -143,6 +143,25 @@ def gestionar_suscripciones(request):
 
 
 ##################################### apis ###############################
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def eliminar_descuento(request, descuento_id):
+    try:
+        descuento = Descuento.objects.get(pk=descuento_id)
+
+        if descuento.usuario_creador != request.user:
+            return Response({"error": "No tienes permiso para eliminar este descuento"}, status=status.HTTP_403_FORBIDDEN)
+        
+        descuento.state = 'eliminado'
+        descuento.save()
+
+        return Response({"message": "Descuento marcado como eliminado correctamente"}, status=status.HTTP_200_OK)
+
+    except Descuento.DoesNotExist:
+        return Response({"error": "Descuento no encontrado"}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 
 @api_view(['GET'])
 def obtener_votos(request, descuento_id):

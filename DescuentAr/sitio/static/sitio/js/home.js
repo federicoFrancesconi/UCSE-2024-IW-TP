@@ -182,6 +182,10 @@ function on_page_load() {
             retirar_voto(descuentoId);
         });
 
+        $('#eliminar-' + descuentoId).on('click', function() {
+            eliminar_descuento(descuentoId);
+        });
+
         obtener_guardado(descuentoId);
     });
 
@@ -209,3 +213,22 @@ function asignarColor(tarjeta) {
 }
 
 tarjetas.forEach(asignarColor);
+
+function eliminar_descuento(descuentoId) {
+    const csrfToken = getCookie('csrftoken');  // Obtener el token CSRF si es necesario
+
+    $.ajax({
+        url: '/api/eliminar_descuento/' + descuentoId + '/',
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': csrfToken 
+        },
+        success: function(response) {
+            window.location.href = '';
+        },
+        error: function(response) {
+            console.error("Error al eliminar el descuento:", response);
+            window.location.href = '/accounts/login/';
+        }
+    });
+}

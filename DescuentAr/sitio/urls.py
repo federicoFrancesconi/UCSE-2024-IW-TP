@@ -19,4 +19,5 @@ urlpatterns = [
     path('rebuild_index/', rebuild_index, name='rebuild_index'),
     path('search/', search_descuento, name='search_descuento'),
     path('search/', include('haystack.urls')),
+    path('api/eliminar_descuento/<int:descuento_id>/', eliminar_descuento, name='eliminar_descuento'),
 ]
