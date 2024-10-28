@@ -160,7 +160,6 @@ AUTH_USER_MODEL = 'accounts.CustomUser'
 FIXTURE_DIRS =  [BASE_DIR / "fixtures"]
 
 # Buscador
-
 HAYSTACK_CONNECTIONS = {
     'default': {
         'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
