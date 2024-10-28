@@ -17,7 +17,6 @@ def home(request):
     id_categoria = request.GET.get('id_categoria')
     fecha_hasta = request.GET.get('fecha_hasta')
     fecha = datetime.strptime(fecha_hasta, '%Y-%m-%d').date() if fecha_hasta else None
-    cant_votos = request.GET.get('cant_votos')
     estado_descuento = request.GET.get('estado_descuento')
 
     categorias = Categoria.objects.all()
@@ -43,8 +42,6 @@ def home(request):
     #si trae el filtro lo hace, sino busca los vigentes 
     descuentos = descuentos.filter(fecha_hasta__lt=fecha) if fecha is not None else descuentos.filter(fecha_hasta__gte=datetime.today().date())
 
-    if cant_votos:
-        descuentos = descuentos.filter(diferencia_votos__gte=int(cant_votos))
 
     descuentos = descuentos.order_by('-id')
 
@@ -53,7 +50,6 @@ def home(request):
         'categorias': categorias,
         'categoria_seleccionada': id_categoria,
         'fecha_hasta_seleccionada': fecha_hasta,
-        'cant_votos_seleccionada': cant_votos,
         'estado_seleccionado': estado_descuento,
         'estados': ['publicado', 'revision'],
     })

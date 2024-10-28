@@ -203,16 +203,16 @@ $(document).ready(function() {
 
 const tarjetas = document.querySelectorAll('.card');
 
-function asignarColor(tarjeta) {
-  const estado = tarjeta.querySelector('.estado_descuento').textContent;
-  const colores = {
-    'publicado': 'bg-success',
-    'revision': 'bg-danger'
-  };
-  tarjeta.classList.add(colores[estado]);
-}
+// function asignarColor(tarjeta) {
+//   const estado = tarjeta.querySelector('.estado_descuento').textContent;
+//   const colores = {
+//     'publicado': 'bg-success',
+//     'revision': 'bg-danger'
+//   };
+//   tarjeta.classList.add(colores[estado]);
+// }
 
-tarjetas.forEach(asignarColor);
+// tarjetas.forEach(asignarColor);
 
 function eliminar_descuento(descuentoId) {
     const csrfToken = getCookie('csrftoken');  // Obtener el token CSRF si es necesario
