@@ -9,6 +9,7 @@ python manage.py migrate
 
 if [ "$CREATE_SUPERUSER" == "true" ]; then
     python manage.py createsuperuser --username fisa --email "fisadev@gmail.com" --noinput || true
+    python manage.py createsuperuser --username fede --email "fedefrancesconiff@gmail.com" --noinput || true
 fi
 
 # Carga de descuentos
