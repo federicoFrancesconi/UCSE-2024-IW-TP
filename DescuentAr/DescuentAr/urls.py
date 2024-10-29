@@ -21,7 +21,8 @@ from django.views.generic.base import TemplateView
 # El orden es importante porque django mira de arriba a abajo
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path("", include("sitio.urls")),
+    path('', include("sitio.urls")),
+    path('robots.txt', TemplateView.as_view(template_name="robots.txt", content_type="text/plain")),
     path("accounts/", include("accounts.urls")),
     path('accounts/', include('django.contrib.auth.urls')),
     # La linea anterior importa todas estas urls:

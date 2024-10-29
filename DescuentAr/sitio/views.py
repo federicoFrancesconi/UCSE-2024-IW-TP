@@ -10,13 +10,13 @@ from rest_framework import status
 from django.db.models import Count, Q, BooleanField, ExpressionWrapper
 from datetime import datetime
 from django.http import JsonResponse
+from haystack.query import SearchQuerySet
 
 def home(request):
 
     id_categoria = request.GET.get('id_categoria')
     fecha_hasta = request.GET.get('fecha_hasta')
     fecha = datetime.strptime(fecha_hasta, '%Y-%m-%d').date() if fecha_hasta else None
-    cant_votos = request.GET.get('cant_votos')
     estado_descuento = request.GET.get('estado_descuento')
 
     categorias = Categoria.objects.all()
@@ -26,14 +26,6 @@ def home(request):
         votos_negativos=Count('voto', filter=Q(voto__voto_positivo=False)),
         diferencia_votos=Count('voto', filter=Q(voto__voto_positivo=True)) - Count('voto', filter=Q(voto__voto_positivo=False))
     )
-
-    # Implementamos el buscador
-    busqueda = request.GET.get("buscar")
-
-    if busqueda:
-        descuentos = Descuento.objects.filter(
-            Q(nombre__icontains = busqueda)   
-        ).distinct()
 
     # Si el usuario no está loggeado le mostramos solo los descuentos publicados
     if not request.user.is_authenticated:
@@ -50,8 +42,6 @@ def home(request):
     #si trae el filtro lo hace, sino busca los vigentes 
     descuentos = descuentos.filter(fecha_hasta__lt=fecha) if fecha is not None else descuentos.filter(fecha_hasta__gte=datetime.today().date())
 
-    if cant_votos:
-        descuentos = descuentos.filter(diferencia_votos__gte=int(cant_votos))
 
     descuentos = descuentos.order_by('-id')
 
@@ -60,7 +50,6 @@ def home(request):
         'categorias': categorias,
         'categoria_seleccionada': id_categoria,
         'fecha_hasta_seleccionada': fecha_hasta,
-        'cant_votos_seleccionada': cant_votos,
         'estado_seleccionado': estado_descuento,
         'estados': ['publicado', 'revision'],
     })
@@ -150,6 +139,25 @@ def gestionar_suscripciones(request):
 
 
 ##################################### apis ###############################
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def eliminar_descuento(request, descuento_id):
+    try:
+        descuento = Descuento.objects.get(pk=descuento_id)
+
+        if descuento.usuario_creador != request.user:
+            return Response({"error": "No tienes permiso para eliminar este descuento"}, status=status.HTTP_403_FORBIDDEN)
+        
+        descuento.state = 'eliminado'
+        descuento.save()
+
+        return Response({"message": "Descuento marcado como eliminado correctamente"}, status=status.HTTP_200_OK)
+
+    except Descuento.DoesNotExist:
+        return Response({"error": "Descuento no encontrado"}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 
 @api_view(['GET'])
 def obtener_votos(request, descuento_id):
@@ -320,3 +328,28 @@ def desuscribir_categoria(request):
     # Eliminar la suscripción
     SuscripcionCategoria.objects.filter(usuario=request.user, categoria=categoria).delete()
     return JsonResponse({'message': 'Desuscripción exitosa'}, status=200)
+
+# ----------------------------------------------------
+# View proporcionada por la cátedra para poder reconstruir el índice de whoosh de la búsqueda interna
+
+def rebuild_index(request):
+    from django.core.management import call_command
+    from django.http import JsonResponse
+    try:
+        call_command("rebuild_index", noinput=False)
+        result = "Index rebuilt"
+    except Exception as err:
+        result = f"Error: {err}"
+
+    return JsonResponse({"result": result})
+
+
+def search_descuento(request):
+    query = request.GET.get('buscar')
+
+    if query:
+        results = SearchQuerySet().filter(nombre__icontains = query)
+    else:
+        results = []
+
+    return render(request, 'search/search.html', {'resultados': results})

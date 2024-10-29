@@ -182,6 +182,10 @@ function on_page_load() {
             retirar_voto(descuentoId);
         });
 
+        $('#eliminar-' + descuentoId).on('click', function() {
+            eliminar_descuento(descuentoId);
+        });
+
         obtener_guardado(descuentoId);
     });
 
@@ -196,3 +200,35 @@ function on_page_load() {
 $(document).ready(function() {
     on_page_load();
 });
+
+const tarjetas = document.querySelectorAll('.card');
+
+// function asignarColor(tarjeta) {
+//   const estado = tarjeta.querySelector('.estado_descuento').textContent;
+//   const colores = {
+//     'publicado': 'bg-success',
+//     'revision': 'bg-danger'
+//   };
+//   tarjeta.classList.add(colores[estado]);
+// }
+
+// tarjetas.forEach(asignarColor);
+
+function eliminar_descuento(descuentoId) {
+    const csrfToken = getCookie('csrftoken');  // Obtener el token CSRF si es necesario
+
+    $.ajax({
+        url: '/api/eliminar_descuento/' + descuentoId + '/',
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': csrfToken 
+        },
+        success: function(response) {
+            window.location.href = '';
+        },
+        error: function(response) {
+            console.error("Error al eliminar el descuento:", response);
+            window.location.href = '/accounts/login/';
+        }
+    });
+}

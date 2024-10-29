@@ -3,7 +3,14 @@
 {% block content %}
     <form method="post">
         {% csrf_token %}
-        {{ form.as_p }}
+        <div class="m-3">{{ form.nombre.label_tag }} {{ form.nombre }}</div>
+        <div class="m-3">{{ form.categoria.label_tag }} {{ form.categoria }}</div>
+        <div class="m-3">
+            <label for="{{ form.fecha_hasta.id_for_label }}">Validez hasta.. :</label>
+         {{ form.fecha_hasta }}
+        </div>
+        <div class="m-3">{{ form.descripcion.label_tag }} {{ form.descripcion }}</div>
+
         <button type="submit" class="btn btn-primary">Crear Descuento</button>
     </form>
 {% endblock %}

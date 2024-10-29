@@ -2,11 +2,20 @@
 
 <body>
     {% block content %}
-        <div class="card">
+        <div class="card m-3">
             <h3 class="card-header">{{ descuento.nombre }}</h3>
             <div class="card-body">
-            <p class="card-text">{{ descuento.descripcion }}</p>    
-            <p class="card-text">{{ descuento.fecha_hasta }}</p>       
+                <div class="row">
+                    <p class="card-text">{{ descuento.descripcion }}</p>
+                </div>
+                <div class="row d-flex justify-content-md-start">
+                    <div class="p-2">Vegencia hasta: </div>
+                    <div class="card-text p-2">{{ descuento.fecha_hasta }}</div> 
+                </div>
+                <div class="row d-flex justify-content-start">
+                    <div class="p-2">Categoria: </div>
+                    <div class="card-text p-2">{{ descuento.categoria.nombre }}</div> 
+                </div>                  
             </div>
         </div>
     {% endblock %}
