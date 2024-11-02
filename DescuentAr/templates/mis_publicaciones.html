@@ -2,24 +2,32 @@
 
 <body>
     {% block content %}
-        {% for descuento in lista_descuentos %}
-            <div class="card">
+            {% for descuento in lista_descuentos %}
+            <!--Usamos este atributo para saber el id de cada descuento en JavaScript-->
+            <div data-descuento-id="{{ descuento.id }}" class="card m-3">
                 <h3 class="card-header">{{ descuento.nombre }}</h3>
                 <div class="card-body">
-                <p class="card-text">{{ descuento.descripcion }}</p>    
-                <a href="{% url 'detalle_descuento' descuento.id %}">Ver detalles</a> 
-                
-                <div>
-                    <button class="btn" id="green"><i class="green fa fa-thumbs-up fa-lg" aria-hidden="true"></i></button>
-                    <span id="votos-positivos-{{ descuento.id }}"></span>
-                </div>
-                <div>
-                    <button class="btn" id="red"><i class="fa fa-thumbs-down fa-lg" aria-hidden="true"></i></button>
-                    <span id="votos-negativos-{{ descuento.id }}"></span>
-                </div>
+                    <p class="card-text">{{ descuento.descripcion }}</p>    
+                    <a href="{% url 'detalle_descuento' descuento.id %}">Ver detalles</a>
 
+                    
+                    <div class="row m-1">
+                        <div class="col-md-2">
+                            <button class="btn" id="green-{{ descuento.id }}"><i class="green fa fa-thumbs-up fa-lg" aria-hidden="true"></i></button>
+                            <span id="votos-positivos-{{ descuento.id }}"></span>
+                        </div>
+                        <div class="col-md-2">
+                            <button class="btn" id="red-{{ descuento.id }}"><i class="fa fa-thumbs-down fa-lg" aria-hidden="true"></i></button>
+                            <span id="votos-negativos-{{ descuento.id }}"></span>
+                        </div>
+                    </div>                  
+                    <button id="retirar-voto-{{ descuento.id }}" class="btn btn-warning" style="display: none;">Retirar Voto</button>
+                    <div class="m-1">
+                        <button id="eliminar-{{ descuento.id }}" type="button" class="btn btn-primary">eliminar</button>
+                    </div>                      
                 </div>
             </div>
         {% endfor %}
+
     {% endblock %}
 </body>
