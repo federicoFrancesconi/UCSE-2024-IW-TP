@@ -49,6 +49,21 @@
                 </div>
                 {% endif %}
                 <div class="form-group col-md-3">
+                    <label for="ordenamiento">Ordenar:</label>
+                    <select name="ordenamiento_seleccionado" class="form-control">
+                        <option value="">...</option>
+                
+                        {% for orden in ordenamiento %}
+                            {% if orden.0 == ordenamiento_seleccionado %}
+                                <option value="{{ orden.0 }}" selected>{{ orden.1 }}</option>
+                            {% else %}
+                                <option value="{{ orden.0 }}">{{ orden.1 }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <div class="form-group col-md-3">
                     <button class="btn btn-primary" type="submit">Filtrar</button>
                 </div>
             </div>

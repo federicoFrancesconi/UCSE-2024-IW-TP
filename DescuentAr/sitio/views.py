@@ -12,12 +12,18 @@ from datetime import datetime
 from django.http import JsonResponse
 from haystack.query import SearchQuerySet
 
+ordenamiento = [
+    ('1', 'fecha'),
+    ('2', 'cantidad de votos')
+]
+
 def home(request):
 
     id_categoria = request.GET.get('id_categoria')
     fecha_hasta = request.GET.get('fecha_hasta')
     fecha = datetime.strptime(fecha_hasta, '%Y-%m-%d').date() if fecha_hasta else None
     estado_descuento = request.GET.get('estado_descuento')
+    ordenamiento_seleccionado = request.GET.get('ordenamiento_seleccionado')
 
     categorias = Categoria.objects.all()
 
@@ -44,10 +50,17 @@ def home(request):
 
 
     descuentos = descuentos.order_by('-id')
+    if ordenamiento_seleccionado is not None:
+        if ordenamiento_seleccionado == 1:
+            descuentos = descuentos.order_by('-fecha_hasta')
+        else:
+            descuentos = descuentos.order_by('-diferencia_votos')
 
     return render(request, 'home.html', {
         'lista_descuentos': descuentos,
         'categorias': categorias,
+        'ordenamiento': ordenamiento,
+        'ordenamienot_seleccionado' : ordenamiento_seleccionado,
         'categoria_seleccionada': id_categoria,
         'fecha_hasta_seleccionada': fecha_hasta,
         'estado_seleccionado': estado_descuento,
