@@ -124,21 +124,25 @@ def notificar_suscriptores(request, descuentoId, categoria):
 
 @login_required
 def mis_publicaciones(request):
-    descuentos = Descuento.objects.filter(usuario_creador=request.user)
 
-    return render(request, 'mis_publicaciones.html', {
-        'lista_descuentos': descuentos,
-        })
+    descuentos = Descuento.objects.filter(usuario_creador=request.user).annotate(
+        votos_positivos=Count('voto', filter=Q(voto__voto_positivo=True)),
+        votos_negativos=Count('voto', filter=Q(voto__voto_positivo=False))
+    )
+    
+    return render(request, 'mis_publicaciones.html', {'lista_descuentos': descuentos,})
 
 @login_required
 def guardados(request):
-    descuentos_guardados = DescuentoGuardado.objects.filter(usuario=request.user)
+    descuentos_guardados = DescuentoGuardado.objects.filter(usuario=request.user).select_related('descuento')
 
-    descuentos = [dg.descuento for dg in descuentos_guardados]
+    descuentos_ids = [dg.descuento.id for dg in descuentos_guardados]
+    descuentos = Descuento.objects.filter(id__in=descuentos_ids).annotate(
+        votos_positivos=Count('voto', filter=Q(voto__voto_positivo=True)),
+        votos_negativos=Count('voto', filter=Q(voto__voto_positivo=False))
+    )
 
-    return render(request, 'guardados.html', {
-        'lista_descuentos': descuentos,
-        })
+    return render(request, 'guardados.html', {'lista_descuentos': descuentos,})
 
 @login_required
 def gestionar_suscripciones(request):

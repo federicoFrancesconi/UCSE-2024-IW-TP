@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-
+{% load static %}
 <body>
     {% block content %}
             {% for descuento in lista_descuentos %}
@@ -14,11 +14,11 @@
                     <div class="row m-1">
                         <div class="col-md-2">
                             <button class="btn" id="green-{{ descuento.id }}"><i class="green fa fa-thumbs-up fa-lg" aria-hidden="true"></i></button>
-                            <span id="votos-positivos-{{ descuento.id }}"></span>
+                            <span id="votos-positivos-{{ descuento.id }}">{{ descuento.votos_positivos }}</span>
                         </div>
                         <div class="col-md-2">
                             <button class="btn" id="red-{{ descuento.id }}"><i class="fa fa-thumbs-down fa-lg" aria-hidden="true"></i></button>
-                            <span id="votos-negativos-{{ descuento.id }}"></span>
+                            <span id="votos-negativos-{{ descuento.id }}">{{ descuento.votos_negativos }}</span>
                         </div>
                     </div>                  
                     <button id="retirar-voto-{{ descuento.id }}" class="btn btn-warning" style="display: none;">Retirar Voto</button>
@@ -28,7 +28,6 @@
                 </div>
             </div>
         {% endfor %}
-
-        <script src="{% static 'sitio/js/mis_publicaciones.js' %}"></script>
+        
     {% endblock %}
 </body>
