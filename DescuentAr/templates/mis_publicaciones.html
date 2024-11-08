@@ -2,6 +2,68 @@
 {% load static %}
 <body>
     {% block content %}
+        <form method="GET">
+            <div class="form-row m-3 border">
+                <div class="row">
+                    <div class="form-group col-md-3">
+                        <label for="categoria">Categoría:</label>
+                        <select name="id_categoria" class="form-control">
+                            <option value="">...</option>
+                            
+                            <!-- Cargamos las categorías en el select, y dejamos seleccionada por la que haya filtrado -->
+                            {% for categoria in categorias %}
+                                {% if categoria.id|add:"0" == categoria_seleccionada|add:"0" %}
+                                    <option value="{{ categoria.id }}" selected>{{ categoria.nombre }}</option>
+                                {% else %}
+                                    <option value="{{ categoria.id }}">{{ categoria.nombre }}</option>
+                                {% endif %}
+                            {% endfor %}
+
+                        </select>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="fecha_hasta">Fecha Hasta:</label>
+                        <input type="date" name="fecha_hasta" class="form-control" value="{{ fecha_hasta_seleccionada }}">
+                    </div>
+                    <!-- No tiene sentido que el usuario filtre por estado si no esta autenticado (solo le aparecen los descuentos publicados)-->
+                    {% if user.is_authenticated %}
+                    <div class="form-group col-md-3">
+                        <label for="estado">Estado:</label>
+                        <select name="estado_descuento" class="form-control">
+                            <option value="">...</option>
+                            
+                            {% for estado in estados %}
+                                {% if estado == estado_seleccionado %}
+                                    <option value="{{ estado }}" selected>{{ estado }}</option>
+                                {% else %}
+                                    <option value="{{ estado }}">{{ estado }}</option>
+                                {% endif %}
+                            {% endfor %}
+
+                        </select>
+                    </div>
+                    {% endif %}
+                    <div class="form-group col-md-3">
+                        <label for="ordenamiento">Ordenar:</label>
+                        <select name="ordenamiento_seleccionado" class="form-control">
+                            <option value="">...</option>
+                    
+                            {% for orden in ordenamiento %}
+                                {% if orden.0 == ordenamiento_seleccionado %}
+                                    <option value="{{ orden.0 }}" selected>{{ orden.1 }}</option>
+                                {% else %}
+                                    <option value="{{ orden.0 }}">{{ orden.1 }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+                    <div class="form-group col-md-3">
+                        <button class="btn btn-primary" type="submit">Filtrar</button>
+                    </div>
+                </div>
+            </div>
+        </form>
             {% for descuento in lista_descuentos %}
             <!--Usamos este atributo para saber el id de cada descuento en JavaScript-->
             <div data-descuento-id="{{ descuento.id }}" class="card m-3">
@@ -27,7 +89,7 @@
                     </div>                      
                 </div>
             </div>
-        {% endfor %}
+            {% endfor %}
         
     {% endblock %}
 </body>

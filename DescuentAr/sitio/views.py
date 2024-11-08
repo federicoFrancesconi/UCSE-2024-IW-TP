@@ -13,8 +13,10 @@ from django.http import JsonResponse
 from haystack.query import SearchQuerySet
 
 ordenamiento = [
-    ('1', 'fecha'),
-    ('2', 'cantidad de votos')
+    ('1', 'fecha descendente'),
+    ('2', 'fecha ascendente'),
+    ('3', 'diferencia de votos descendente'),
+    ('4', 'diferencia de votos ascendente')
 ]
 
 def home(request):
@@ -50,11 +52,20 @@ def home(request):
 
 
     descuentos = descuentos.order_by('-id')
-    if ordenamiento_seleccionado is not None:
-        if ordenamiento_seleccionado == 1:
-            descuentos = descuentos.order_by('-fecha_hasta')
-        else:
-            descuentos = descuentos.order_by('-diferencia_votos')
+    opciones_ordenamiento = {
+    '1': '-fecha_hasta',
+    '2': 'fecha_hasta', 
+    '3': '-diferencia_votos', 
+    '4': 'diferencia_votos'
+    }
+    if ordenamiento_seleccionado in opciones_ordenamiento:
+        descuentos = descuentos.order_by(opciones_ordenamiento[ordenamiento_seleccionado])
+
+    # if ordenamiento_seleccionado is not None:
+    #     if ordenamiento_seleccionado == 1:
+    #         descuentos = descuentos.order_by('-fecha_hasta')
+    #     else:
+    #         descuentos = descuentos.order_by('-diferencia_votos')
 
     return render(request, 'home.html', {
         'lista_descuentos': descuentos,
@@ -124,16 +135,56 @@ def notificar_suscriptores(request, descuentoId, categoria):
 
 @login_required
 def mis_publicaciones(request):
+    id_categoria = request.GET.get('id_categoria')
+    fecha_hasta = request.GET.get('fecha_hasta')
+    fecha = datetime.strptime(fecha_hasta, '%Y-%m-%d').date() if fecha_hasta else None
+    estado_descuento = request.GET.get('estado_descuento')
+    ordenamiento_seleccionado = request.GET.get('ordenamiento_seleccionado')
+
+    categorias = Categoria.objects.all()
 
     descuentos = Descuento.objects.filter(usuario_creador=request.user).annotate(
         votos_positivos=Count('voto', filter=Q(voto__voto_positivo=True)),
         votos_negativos=Count('voto', filter=Q(voto__voto_positivo=False))
     )
+
+    if estado_descuento:
+        descuentos = descuentos.filter(state=estado_descuento)
+    if id_categoria:
+        descuentos = descuentos.filter(categoria_id = id_categoria)
+        
+    descuentos = descuentos.filter(fecha_hasta__lt=fecha) if fecha is not None else descuentos.filter(fecha_hasta__gte=datetime.today().date())
+
+    descuentos = descuentos.order_by('-id')
+    opciones_ordenamiento = {
+    '1': '-fecha_hasta',
+    '2': 'fecha_hasta', 
+    '3': '-diferencia_votos', 
+    '4': 'diferencia_votos'
+    }
+    if ordenamiento_seleccionado in opciones_ordenamiento:
+        descuentos = descuentos.order_by(opciones_ordenamiento[ordenamiento_seleccionado])
     
-    return render(request, 'mis_publicaciones.html', {'lista_descuentos': descuentos,})
+    return render(request, 'mis_publicaciones.html', {'lista_descuentos': descuentos,
+                                                      'categorias': categorias,
+                                                        'ordenamiento': ordenamiento,
+                                                        'ordenamienot_seleccionado' : ordenamiento_seleccionado,
+                                                        'categoria_seleccionada': id_categoria,
+                                                        'fecha_hasta_seleccionada': fecha_hasta,
+                                                        'estado_seleccionado': estado_descuento,
+                                                        'estados': ['publicado', 'revision', 'eliminado', 'suspendido'],
+    })
 
 @login_required
 def guardados(request):
+    id_categoria = request.GET.get('id_categoria')
+    fecha_hasta = request.GET.get('fecha_hasta')
+    fecha = datetime.strptime(fecha_hasta, '%Y-%m-%d').date() if fecha_hasta else None
+    estado_descuento = request.GET.get('estado_descuento')
+    ordenamiento_seleccionado = request.GET.get('ordenamiento_seleccionado')
+
+    categorias = Categoria.objects.all()
+
     descuentos_guardados = DescuentoGuardado.objects.filter(usuario=request.user).select_related('descuento')
 
     descuentos_ids = [dg.descuento.id for dg in descuentos_guardados]
@@ -141,8 +192,33 @@ def guardados(request):
         votos_positivos=Count('voto', filter=Q(voto__voto_positivo=True)),
         votos_negativos=Count('voto', filter=Q(voto__voto_positivo=False))
     )
+    if estado_descuento:
+        descuentos = descuentos.filter(state=estado_descuento)
+    if id_categoria:
+        descuentos = descuentos.filter(categoria_id = id_categoria)         
+    
+    descuentos = descuentos.filter(fecha_hasta__lt=fecha) if fecha is not None else descuentos.filter(fecha_hasta__gte=datetime.today().date())
 
-    return render(request, 'guardados.html', {'lista_descuentos': descuentos,})
+
+    descuentos = descuentos.order_by('-id')
+    opciones_ordenamiento = {
+    '1': '-fecha_hasta',
+    '2': 'fecha_hasta', 
+    '3': '-diferencia_votos', 
+    '4': 'diferencia_votos'
+    }
+    if ordenamiento_seleccionado in opciones_ordenamiento:
+        descuentos = descuentos.order_by(opciones_ordenamiento[ordenamiento_seleccionado])
+
+    return render(request, 'guardados.html', {'lista_descuentos': descuentos,
+                                              'categorias': categorias,
+                                            'ordenamiento': ordenamiento,
+                                            'ordenamienot_seleccionado' : ordenamiento_seleccionado,
+                                            'categoria_seleccionada': id_categoria,
+                                            'fecha_hasta_seleccionada': fecha_hasta,
+                                            'estado_seleccionado': estado_descuento,
+                                            'estados': ['publicado', 'revision'],
+    })
 
 @login_required
 def gestionar_suscripciones(request):
