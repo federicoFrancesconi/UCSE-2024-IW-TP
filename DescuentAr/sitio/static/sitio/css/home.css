@@ -1,7 +1,11 @@
 body{
-    margin: 40px;
+background-color: #B7E0FF;
 }
-  
+
+.mi_navbar{
+background-color: #1E3E62;
+}
+
 button{
 cursor: pointer;
 outline: 0;
@@ -27,4 +31,8 @@ color: red;
 
 .revision{
     background-color: red;
+}
+
+.fondoC{
+    background-color: #FF9D3D;
 }

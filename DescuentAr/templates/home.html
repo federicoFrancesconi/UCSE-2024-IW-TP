@@ -8,9 +8,9 @@
 <body>
     {% block content %}
     <form method="GET">
-        <div class="form-row m-3 border">
+        <div class="form-row m-3">
             <div class="row">
-                <div class="form-group col-md-3">
+                <div class="form-group col-md-2">
                     <label for="categoria">Categoría:</label>
                     <select name="id_categoria" class="form-control">
                         <option value="">...</option>
@@ -70,41 +70,54 @@
         </div>
     </form>
     <meta name="csrf-token" content="{{ csrf_token }}">
-
-        {% for descuento in lista_descuentos %}
-            <!--Usamos este atributo para saber el id de cada descuento en JavaScript-->
-            <div data-descuento-id="{{ descuento.id }}" class="card m-3">
-                <h3 class="card-header">{{ descuento.nombre }}</h3>
-                <div class="card-body">
-                    <p class="card-text">{{ descuento.descripcion }}</p>    
-                    <a href="{% url 'detalle_descuento' descuento.id %}">Ver detalles</a>
-
-                    <!-- Este if previene que un usuario interactue con sus propios descuentos -->
-                    {% if descuento.usuario_creador.id != user.id %}
-                    <div class="row m-1">
-                        <div class="col-md-2">
-                            <button class="btn" id="green-{{ descuento.id }}"><i class="green fa fa-thumbs-up fa-lg" aria-hidden="true"></i></button>
-                            <span id="votos-positivos-{{ descuento.id }}"></span>
+        <div class="row md-6">
+            {% for descuento in lista_descuentos %}
+                <!--Usamos este atributo para saber el id de cada descuento en JavaScript-->
+                <div class="col-md-6">
+                    <div data-descuento-id="{{ descuento.id }}" class="card m-3 cardsS">
+                        <div class="card-body p-0">
+                            <div class="row">
+                                <div class="col-md-4 p-4">
+                                    {% if descuento.usuario_creador.id != user.id %}
+                                    <div class="row m-1">
+                                        <div class="col">
+                                            <button id="retirar-voto-{{ descuento.id }}" class="btn btn-warning" style="display: none;"><i id= "guardarD" class="fa-solid fa-xmark"></i></button>
+                                        </div>
+                                        <div class="row-md-2">
+                                            <button class="btn" id="green-{{ descuento.id }}"><i class="green fa fa-thumbs-up fa-lg" aria-hidden="true"></i></button>
+                                            <span id="votos-positivos-{{ descuento.id }}"></span>
+                                        </div>
+                                        <div class="row-md-2">
+                                            <button class="btn" id="red-{{ descuento.id }}"><i class="fa fa-thumbs-down fa-lg" aria-hidden="true"></i></button>
+                                            <span id="votos-negativos-{{ descuento.id }}"></span>
+                                        </div>
+                                    </div>                  
+                                    <div class="row">  
+                                        <div class="col">
+                                            <!--El atributo data-url es para conocer la url en JavaScript-->
+                                            <button id="guardar-{{ descuento.id }}" class="btn btn-danger" data-url="{% url 'guardar_descuento' %}"><i class="fa-regular fa-bookmark"></i></button>
+                                        </div>
+                                        <div class="col">
+                                            <a class="btn btn-primary" href="{% url 'detalle_descuento' descuento.id %}"><i class="fa-solid fa-circle-info"></i></a>
+                                        </div>
+                                    </div>
+                                    {% else %}
+                                    <div class="m-1">
+                                        <button id="eliminar-{{ descuento.id }}" type="button" class="btn btn-primary"><i id="guardarD" class="fa-solid fa-share-from-square"></i></button>
+                                    </div>                      
+                                    {% endif %}
+                                </div>
+                                <div class="col-md-8 fondoC p-4">
+                                    <h3>{{ descuento.nombre }}</h3>
+                                    <p class="card-text">{{ descuento.descripcion }}</p>    
+                                </div>
+                                <!-- Este if previene que un usuario interactue con sus propios descuentos -->
+                            </div>
                         </div>
-                        <div class="col-md-2">
-                            <button class="btn" id="red-{{ descuento.id }}"><i class="fa fa-thumbs-down fa-lg" aria-hidden="true"></i></button>
-                            <span id="votos-negativos-{{ descuento.id }}"></span>
-                        </div>
-                    </div>                  
-                    <button id="retirar-voto-{{ descuento.id }}" class="btn btn-warning" style="display: none;">Retirar Voto</button>
-                    <div>
-                        <!--El atributo data-url es para conocer la url en JavaScript-->
-                        <button id="guardar-{{ descuento.id }}" class="btn btn-danger" data-url="{% url 'guardar_descuento' %}">Guardar</button>
                     </div>
-                    {% else %}
-                    <div class="m-1">
-                        <button id="eliminar-{{ descuento.id }}" type="button" class="btn btn-primary">eliminar</button>
-                    </div>                      
-                    {% endif %}
                 </div>
-            </div>
-        {% endfor %}
-
+            {% endfor %}
+        </div>
         
         <script src="{% static 'sitio/js/home.js' %}"></script>
     {% endblock %}

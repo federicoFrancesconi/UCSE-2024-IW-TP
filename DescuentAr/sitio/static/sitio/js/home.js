@@ -61,10 +61,10 @@ function obtener_guardado(descuentoId) {
         type: "GET",
         dataType: "json",
         success: function(data) {
-            if (data.guardado) {
-                $('#guardar-' + descuentoId).text("Quitar de guardados");
+            if (response.message === "Descuento guardado correctamente") {
+                $('#guardar-' + descuentoId).html('<i class="fa-solid fa-bookmark"></i>');
             } else {
-                $('#guardar-' + descuentoId).text("Guardar");
+                $('#guardar-' + descuentoId).html('<i class="fa-regular fa-bookmark"></i>');
             }
         },
         error: function(error) {
@@ -87,9 +87,9 @@ function guardar_descuento(descuentoId) {
         success: function(response) {
             // Update button text based on the response
             if (response.message === "Descuento guardado correctamente") {
-                $('#guardar-' + descuentoId).text("Quitar de guardados");
+                $('#guardar-' + descuentoId).html('<i class="fa-solid fa-bookmark"></i>');
             } else {
-                $('#guardar-' + descuentoId).text("Guardar");
+                $('#guardar-' + descuentoId).html('<i class="fa-regular fa-bookmark"></i>');
             }
         },
         error: function(error) {

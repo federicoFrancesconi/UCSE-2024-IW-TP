@@ -2,9 +2,11 @@
 {% load static %}
 <!--Usamos este atributo para saber el csrf_token en JavaScript-->
 <meta name="csrf-token" content="{{ csrf_token }}">
-
+<head>
+    <link rel="stylesheet" href="{% static 'sitio/css/home.css' %}">
+</head>
 <body>
-    <main class="container w-50">
+    <main class="container">
     {% block content %}
 
     {% endblock %}
