@@ -1,5 +1,7 @@
 body{
 background-color: #B7E0FF;
+font-family: 'DM Sans', sans-serif;
+font-weight: bold;
 }
 
 .mi_navbar{
@@ -34,5 +36,17 @@ color: red;
 }
 
 .fondoC{
-    background-color: #FF9D3D;
+    background-color: #FFDA03;
+}
+
+.info-image{
+    max-width: 100%;     /* Asegura que la imagen no exceda el ancho de su contenedor */
+    height: auto;        /* Mantiene la proporción de la imagen */
+    border-radius: 10px; /* Opcional: redondea las esquinas */
+    display: block;      /* Asegura que la imagen sea tratada como bloque */
+    margin: 0 auto;      /* Centra la imagen horizontalmente */
+}
+
+.FondoC2{
+    background-color: #AAA;
 }

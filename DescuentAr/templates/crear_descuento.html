@@ -1,16 +1,26 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block content %}
-    <form method="post">
-        {% csrf_token %}
-        <div class="m-3">{{ form.nombre.label_tag }} {{ form.nombre }}</div>
-        <div class="m-3">{{ form.categoria.label_tag }} {{ form.categoria }}</div>
-        <div class="m-3">
-            <label for="{{ form.fecha_hasta.id_for_label }}">Validez hasta.. :</label>
-         {{ form.fecha_hasta }}
-        </div>
-        <div class="m-3">{{ form.descripcion.label_tag }} {{ form.descripcion }}</div>
+<div class="card fondoC border-0 rounded-0">
+    <div class="row">
+        <div class="col p-4">
+            <form method="post">
+                {% csrf_token %}
+                <div class="m-3">{{ form.nombre.label_tag }} {{ form.nombre }}</div>
+                <div class="m-3">{{ form.categoria.label_tag }} {{ form.categoria }}</div>
+                <div class="m-3">
+                    <label for="{{ form.fecha_hasta.id_for_label }}">Validez hasta.. :</label>
+                {{ form.fecha_hasta }}
+                </div>
+                <div class="m-3">{{ form.descripcion.label_tag }} {{ form.descripcion }}</div>
 
-        <button type="submit" class="btn btn-primary">Crear Descuento</button>
-    </form>
+                <button type="submit" class="btn btn-primary"><i class="fa-solid fa-circle-plus"></i></button>
+            </form>
+        </div>
+        <div class="col">
+            <img src="{% static '/sitio/img/descuento.jpg' %}" alt="Imagen descriptiva" class="img-fluid">
+        </div>
+    </div>
+</div>
 {% endblock %}
