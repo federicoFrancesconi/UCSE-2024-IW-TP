@@ -160,6 +160,35 @@ function actualizarEstadoDescuento(descuentoId, estado) {
     $('#estado-' + descuentoId).text(estado);
 }
 
+function eliminar_descuento(descuentoId) {
+    const csrfToken = getCookie('csrftoken');  // Obtener el token CSRF si es necesario
+
+    $.ajax({
+        url: '/api/eliminar_descuento/' + descuentoId + '/',
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': csrfToken 
+        },
+        success: function(response) {
+            window.location.href = '';
+        },
+        error: function(response) {
+            console.error("Error al eliminar el descuento:", response);
+            window.location.href = '/accounts/login/';
+        }
+    });
+}
+
+function asignarColor(tarjeta) {
+    const estado = tarjeta.querySelector('.estado_descuento').innerText.trim();
+    const colores = {
+        'publicado': 'bg-success',
+        'revision': 'bg-warning',
+        'eliminado': 'bg-danger'
+    };
+    tarjeta.classList.add(colores[estado]);
+}
+
 function on_page_load() {
     const descuentos = document.querySelectorAll("[data-descuento-id]");
 
@@ -191,6 +220,9 @@ function on_page_load() {
 
     obtener_votos_general(descuentos_id);
 
+    const tarjetas = document.querySelectorAll('.card');
+    tarjetas.forEach(asignarColor);
+
     // Actualizamos los votos cada 10 segundos
     setInterval(function() {
         obtener_votos_general(descuentos_id);
@@ -200,28 +232,3 @@ function on_page_load() {
 $(document).ready(function() {
     on_page_load();
 });
-
-
-
-
-
-
-
-function eliminar_descuento(descuentoId) {
-    const csrfToken = getCookie('csrftoken');  // Obtener el token CSRF si es necesario
-
-    $.ajax({
-        url: '/api/eliminar_descuento/' + descuentoId + '/',
-        method: 'POST',
-        headers: {
-            'X-CSRFToken': csrfToken 
-        },
-        success: function(response) {
-            window.location.href = '';
-        },
-        error: function(response) {
-            console.error("Error al eliminar el descuento:", response);
-            window.location.href = '/accounts/login/';
-        }
-    });
-}
