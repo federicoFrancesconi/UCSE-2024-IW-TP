@@ -61,7 +61,7 @@ function obtener_guardado(descuentoId) {
         type: "GET",
         dataType: "json",
         success: function(data) {
-            if (response.message === "Descuento guardado correctamente") {
+            if (data.guardado) {
                 $('#guardar-' + descuentoId).html('<i class="fa-solid fa-bookmark"></i>');
             } else {
                 $('#guardar-' + descuentoId).html('<i class="fa-regular fa-bookmark"></i>');
