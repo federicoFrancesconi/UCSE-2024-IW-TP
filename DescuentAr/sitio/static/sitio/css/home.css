@@ -36,7 +36,7 @@ color: red;
 }
 
 .fondoC{
-    background-color: #FFDA03;
+    background-color: #f1f1f1;
 }
 
 .info-image{
@@ -49,4 +49,19 @@ color: red;
 
 .FondoC2{
     background-color: #AAA;
+}
+
+.card{
+    overflow: hidden;
+}
+
+.card-body {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+}
+
+.eliminarC{
+    display: flex;
+    width: 400px;
 }
