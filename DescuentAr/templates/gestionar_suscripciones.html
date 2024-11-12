@@ -2,29 +2,33 @@
 {% load static %}
 
 {% block content %}
-    <h2>Suscripciones a Categorías</h2>
-    <div class="row md-6 d-flex align-items-stretch g-5">
-        {% for categoria in categorias %}
-        <div class="col-md-6">
-            <div class="categoria card m-2 shadow" data-categoria-id="{{ categoria.id }}" style="width: 18rem;">
-                <div class="card-body row">
-                    <div class="col">
-                        <h5 class="card-title">{{ categoria.nombre }}</h5>
-                    </div>
-                <div class="row">
-                    <div class="col">
-                    {% if categoria.id in categorias_suscritas %}
-                        <!-- Botón para desuscribirse -->
-                        <button class="btn btn-danger" id="btn-desuscribirse-{{ categoria.id }}" data-id="{{ categoria.id }}">Desuscribirse</button>
-                    {% else %}
-                        <!-- Botón para suscribirse -->
-                        <button class="btn btn-primary" id="btn-suscribirse-{{ categoria.id }}" data-id="{{ categoria.id }}">Suscribirse</button>
-                    {% endif %}
+    <div class="fondoC2 d-flex justify-content-center align-items-center p-2 shadow">
+        <h2>Suscripciones</h2>
+    </div>
+    <div class="d-flex justify-content-center align-items-center fondoC shadow p-2">
+        <div class="row md-6 d-flex align-items-stretch g-5">
+            {% for categoria in categorias %}
+                <div class="col-md-4">
+                    <div class="categoria card m-2 shadow" data-categoria-id="{{ categoria.id }}" style="width: 18rem;">
+                        <div class="card-body row">
+                            <div class="col">
+                                <h5 class="card-title">{{ categoria.nombre }}</h5>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col p-4">
+                                {% if categoria.id in categorias_suscritas %}
+                                    <!-- Botón para desuscribirse -->
+                                    <button class="btn btn-danger" id="btn-desuscribirse-{{ categoria.id }}" data-id="{{ categoria.id }}">Desuscribirse</button>
+                                {% else %}
+                                    <!-- Botón para suscribirse -->
+                                    <button class="btn btn-primary" id="btn-suscribirse-{{ categoria.id }}" data-id="{{ categoria.id }}">Suscribirse</button>
+                                {% endif %}
+                            </div>
+                        </div>
                     </div>
                 </div>
-                </div>
-            </div>
-        {% endfor %}
+            {% endfor %}
         </div>
     </div>   
     <script src="{% static 'sitio/js/gestionar_suscripciones.js' %}"></script>

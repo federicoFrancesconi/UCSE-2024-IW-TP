@@ -5,9 +5,9 @@
   <div class="container">
     <div class="row">
       <div class="col-12 col-md-6 offset-md-3">
-        <div class="card">
+        <div class="card shadow">
           <div class="card-body">
-
+            <div class="row">
             <h2 class="card-title">Ingrese sus credenciales</h2>
             <form action="{% url 'login' %}" method="post">
               {% csrf_token %}
@@ -24,10 +24,12 @@
               <!-- Este input permite el redireccionamiento a la página a la cual quería dirigirse el usuario -->
               <input type="hidden" name="next" value="{{ next }}">
             </form>
-
-            <div class="text-center mt-3">
-              <p>¿No tienes una cuenta?</p>
-              <a href="{% url 'signup' %}" class="btn btn-secondary">Registrarse</a>
+            </div>
+            <div class="row">
+              <div class="text-center mt-3">
+                <p>¿No tienes una cuenta?</p>
+                <a href="{% url 'signup' %}" class="btn btn-secondary">Registrarse</a>
+              </div>
             </div>
             
           </div>

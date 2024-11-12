@@ -1,0 +1,293 @@
+[
+    {
+        "model": "sitio.categoria",
+        "pk": 1,
+        "fields": {
+            "nombre": "Ropa"
+        }
+    },
+    {
+        "model": "sitio.categoria",
+        "pk": 2,
+        "fields": {
+            "nombre": "Electrónica"
+        }
+    },
+    {
+        "model": "sitio.categoria",
+        "pk": 3,
+        "fields": {
+            "nombre": "Alimentos y Bebidas"
+        }
+    },
+    {
+        "model": "sitio.categoria",
+        "pk": 4,
+        "fields": {
+            "nombre": "Hogar y Decoración"
+        }
+    },
+    {
+        "model": "sitio.categoria",
+        "pk": 5,
+        "fields": {
+            "nombre": "Salud y Belleza"
+        }
+    },
+    {
+        "model": "sitio.descuento",
+        "pk": 1,
+        "fields": {
+            "nombre": "Gran descuento en Jeans de Marca",
+            "descripcion": "Aprovecha un 30% de descuento en jeans de marcas reconocidas. Calidad y estilo garantizados para todas las temporadas.",
+            "usuario_creador": 1,
+            "categoria": 1,
+            "fecha_hasta": "2024-12-31",
+            "state": "publicado"
+        }
+    },
+    {
+        "model": "sitio.descuento",
+        "pk": 2,
+        "fields": {
+            "nombre": "Rebaja en Televisores 4K",
+            "descripcion": "Disfruta de un 20% de descuento en televisores de última generación, con tecnología 4K para una experiencia visual inmersiva.",
+            "usuario_creador": 2,
+            "categoria": 2,
+            "fecha_hasta": "2024-11-30",
+            "state": "revision"
+        }
+    },
+    {
+        "model": "sitio.descuento",
+        "pk": 3,
+        "fields": {
+            "nombre": "Promoción en Smartphones Premium",
+            "descripcion": "Obtén un 15% de descuento en smartphones de gama alta. Los últimos modelos al mejor precio, solo por tiempo limitado.",
+            "usuario_creador": 3,
+            "categoria": 2,
+            "fecha_hasta": "2024-10-15",
+            "state": "publicado"
+        }
+    },
+    {
+        "model": "sitio.descuento",
+        "pk": 4,
+        "fields": {
+            "nombre": "Descuento en Frutas Orgánicas",
+            "descripcion": "Un 10% de descuento en frutas frescas y orgánicas. Productos directamente del campo para una alimentación saludable.",
+            "usuario_creador": 4,
+            "categoria": 3,
+            "fecha_hasta": "2024-09-30",
+            "state": "revision"
+        }
+    },
+    {
+        "model": "sitio.descuento",
+        "pk": 5,
+        "fields": {
+            "nombre": "Oferta en Verduras de Temporada",
+            "descripcion": "Aprovecha un 10% de descuento en verduras frescas de temporada. Selección especial de productos locales.",
+            "usuario_creador": 5,
+            "categoria": 3,
+            "fecha_hasta": "2024-09-30",
+            "state": "publicado"
+        }
+    },
+    {
+        "model": "sitio.descuento",
+        "pk": 6,
+        "fields": {
+            "nombre": "Descuento en Calzado Deportivo",
+            "descripcion": "25% de descuento en calzado deportivo de primeras marcas. Ideal para quienes buscan rendimiento y estilo.",
+            "usuario_creador": 1,
+            "categoria": 1,
+            "fecha_hasta": "2024-12-01",
+            "state": "revision"
+        }
+    },
+    {
+        "model": "sitio.descuento",
+        "pk": 7,
+        "fields": {
+            "nombre": "Descuento en Accesorios de Moda",
+            "descripcion": "Luce a la moda con un 15% de descuento en accesorios seleccionados, como bolsos, sombreros y mucho más.",
+            "usuario_creador": 2,
+            "categoria": 1,
+            "fecha_hasta": "2024-10-31",
+            "state": "publicado"
+        }
+    },
+    {
+        "model": "sitio.descuento",
+        "pk": 8,
+        "fields": {
+            "nombre": "Oferta en Laptops de Alta Gama",
+            "descripcion": "20% de descuento en laptops de última tecnología. Perfectas para el trabajo, el estudio o el entretenimiento.",
+            "usuario_creador": 3,
+            "categoria": 2,
+            "fecha_hasta": "2024-11-15",
+            "state": "publicado"
+        }
+    },
+    {
+        "model": "sitio.descuento",
+        "pk": 9,
+        "fields": {
+            "nombre": "Promoción en Bebidas Refrescantes",
+            "descripcion": "10% de descuento en bebidas refrescantes de todas las marcas. Mantente hidratado y disfruta al mejor precio.",
+            "usuario_creador": 4,
+            "categoria": 3,
+            "fecha_hasta": "2024-09-30",
+            "state": "revision"
+        }
+    },
+    {
+        "model": "sitio.descuento",
+        "pk": 10,
+        "fields": {
+            "nombre": "Descuento en Consolas de Videojuegos",
+            "descripcion": "Aprovecha un 15% de descuento en consolas de videojuegos. Ideal para los gamers que buscan diversión sin límites.",
+            "usuario_creador": 5,
+            "categoria": 2,
+            "fecha_hasta": "2024-12-25",
+            "state": "publicado"
+        }
+    },
+    {
+        "model": "sitio.voto",
+        "pk": 1,
+        "fields": {
+            "usuario": 2,
+            "descuento": 1,
+            "voto_positivo": true
+        }
+    },
+    {
+        "model": "sitio.voto",
+        "pk": 2,
+        "fields": {
+            "usuario": 3,
+            "descuento": 1,
+            "voto_positivo": false
+        }
+    },
+    {
+        "model": "sitio.voto",
+        "pk": 3,
+        "fields": {
+            "usuario": 4,
+            "descuento": 2,
+            "voto_positivo": true
+        }
+    },
+    {
+        "model": "sitio.voto",
+        "pk": 4,
+        "fields": {
+            "usuario": 5,
+            "descuento": 2,
+            "voto_positivo": false
+        }
+    },
+    {
+        "model": "sitio.voto",
+        "pk": 5,
+        "fields": {
+            "usuario": 1,
+            "descuento": 3,
+            "voto_positivo": true
+        }
+    },
+    {
+        "model": "sitio.voto",
+        "pk": 6,
+        "fields": {
+            "usuario": 2,
+            "descuento": 3,
+            "voto_positivo": true
+        }
+    },
+    {
+        "model": "sitio.voto",
+        "pk": 7,
+        "fields": {
+            "usuario": 3,
+            "descuento": 4,
+            "voto_positivo": true
+        }
+    },
+    {
+        "model": "sitio.voto",
+        "pk": 8,
+        "fields": {
+            "usuario": 4,
+            "descuento": 5,
+            "voto_positivo": true
+        }
+    },
+    {
+        "model": "sitio.voto",
+        "pk": 9,
+        "fields": {
+            "usuario": 5,
+            "descuento": 6,
+            "voto_positivo": true
+        }
+    },
+    {
+        "model": "sitio.voto",
+        "pk": 10,
+        "fields": {
+            "usuario": 1,
+            "descuento": 6,
+            "voto_positivo": true
+        }
+    },
+    {
+        "model": "sitio.voto",
+        "pk": 11,
+        "fields": {
+            "usuario": 2,
+            "descuento": 7,
+            "voto_positivo": false
+        }
+    },
+    {
+        "model": "sitio.voto",
+        "pk": 12,
+        "fields": {
+            "usuario": 3,
+            "descuento": 8,
+            "voto_positivo": true
+        }
+    },
+    {
+        "model": "sitio.voto",
+        "pk": 13,
+        "fields": {
+            "usuario": 4,
+            "descuento": 9,
+            "voto_positivo": true
+        }
+    },
+    {
+        "model": "sitio.voto",
+        "pk": 14,
+        "fields": {
+            "usuario": 5,
+            "descuento": 10,
+            "voto_positivo": false
+        }
+    },
+    {
+        "model": "sitio.voto",
+        "pk": 15,
+        "fields": {
+            "usuario": 1,
+            "descuento": 10,
+            "voto_positivo": true
+        }
+    }
+
+]
