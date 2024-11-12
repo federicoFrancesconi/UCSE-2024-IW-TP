@@ -74,7 +74,7 @@
             {% for descuento in lista_descuentos %}
                 <div class="col-md-6">
                     <!--Usamos este atributo para saber el id de cada descuento en JavaScript-->
-                    <div data-descuento-id="{{ descuento.id }}" class="card m-3 cardsS h-100">
+                    <div data-descuento-id="{{ descuento.id }}" class="card m-3 cardsS h-100 shadow">
                         <div class="d-none estado_descuento">
                             <p>{{descuento.state}}</p>
                         </div>

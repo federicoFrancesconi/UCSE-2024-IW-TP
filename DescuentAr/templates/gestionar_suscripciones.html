@@ -3,12 +3,16 @@
 
 {% block content %}
     <h2>Suscripciones a Categorías</h2>
-    <div>
+    <div class="row md-6 d-flex align-items-stretch g-5">
         {% for categoria in categorias %}
-            <div class="categoria card m-2" data-categoria-id="{{ categoria.id }}" style="width: 18rem;">
-                <div class="card-body">
-                <h5 class="card-title">{{ categoria.nombre }}</h5>
-                <div>
+        <div class="col-md-6">
+            <div class="categoria card m-2 shadow" data-categoria-id="{{ categoria.id }}" style="width: 18rem;">
+                <div class="card-body row">
+                    <div class="col">
+                        <h5 class="card-title">{{ categoria.nombre }}</h5>
+                    </div>
+                <div class="row">
+                    <div class="col">
                     {% if categoria.id in categorias_suscritas %}
                         <!-- Botón para desuscribirse -->
                         <button class="btn btn-danger" id="btn-desuscribirse-{{ categoria.id }}" data-id="{{ categoria.id }}">Desuscribirse</button>
@@ -16,10 +20,12 @@
                         <!-- Botón para suscribirse -->
                         <button class="btn btn-primary" id="btn-suscribirse-{{ categoria.id }}" data-id="{{ categoria.id }}">Suscribirse</button>
                     {% endif %}
+                    </div>
                 </div>
                 </div>
             </div>
         {% endfor %}
+        </div>
     </div>   
     <script src="{% static 'sitio/js/gestionar_suscripciones.js' %}"></script>
 {% endblock %}
